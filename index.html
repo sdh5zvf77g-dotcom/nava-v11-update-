@@ -1,0 +1,2077 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0a1610">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Naga Exotics">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<title>Naga Exotics — Breeder Pro V11</title>
+<style>
+:root {
+  --bg: #050d09;
+  --surface: #0c1611;
+  --surface2: #121f18;
+  --surface3: #182820;
+  --border: #24352c;
+  --border2: #2f4438;
+  --text: #eef6f0;
+  --text2: #b7c9bc;
+  --muted: #7d9285;
+  --accent: #22c55e;
+  --accent-dim: #16a34a;
+  --accent-soft: rgba(34,197,94,.15);
+  --danger: #ef4444;
+  --danger-soft: rgba(239,68,68,.15);
+  --warn: #f59e0b;
+  --warn-soft: rgba(245,158,11,.15);
+  --blue: #38bdf8;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --header-h: 0px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg); color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+  font-size: 15px;
+  line-height: 1.45;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button {
+  border: 0; border-radius: var(--radius-sm);
+  padding: 12px 14px; font-weight: 700;
+  background: var(--surface3); color: var(--text);
+  cursor: pointer; -webkit-appearance: none;
+  transition: background .15s, transform .1s;
+}
+button:active { transform: scale(.97); }
+button.primary { background: var(--accent); color: #042f14; }
+button.primary:active { background: var(--accent-dim); }
+button.danger { background: var(--danger-soft); color: #fca5a5; }
+button.warn { background: var(--warn-soft); color: #fcd34d; }
+button.ghost { background: transparent; border: 1px solid var(--border2); }
+button.small { padding: 8px 11px; font-size: 13px; font-weight: 650; }
+button.icon { width: 42px; height: 42px; padding: 0; display: grid; place-items: center; font-size: 18px; }
+
+.app {
+  max-width: 920px; margin: 0 auto;
+  min-height: 100vh; min-height: 100dvh;
+  background: var(--bg);
+  padding-bottom: calc(72px + var(--safe-bottom));
+}
+
+/* Header */
+.head {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(5,13,9,.92);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: calc(10px + var(--safe-top)) 16px 0;
+}
+.brand-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { font-size: 20px; font-weight: 800; letter-spacing: -.3px; }
+.brand span { color: var(--accent); }
+.sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
+.head-actions { display: flex; gap: 8px; }
+
+/* Bottom nav (mobile-first) */
+.bottom-nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  background: rgba(8,16,12,.94);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border-top: 1px solid var(--border);
+  padding: 6px 8px calc(6px + var(--safe-bottom));
+  display: flex; justify-content: space-around; gap: 2px;
+  max-width: 920px; margin: 0 auto;
+}
+.bottom-nav button {
+  flex: 1; background: transparent; color: var(--muted);
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 8px 4px; font-size: 10px; font-weight: 650; border-radius: 12px;
+}
+.bottom-nav button.active { color: var(--accent); background: var(--accent-soft); }
+.bottom-nav button .ico { font-size: 20px; line-height: 1; }
+
+main { padding: 16px; }
+.view { display: none; animation: fade .2s ease; }
+.view.active { display: block; }
+@keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+h1,h2,h3 { margin: 0 0 12px; font-weight: 750; letter-spacing: -.2px; }
+h2 { font-size: 22px; }
+h3 { font-size: 16px; color: var(--text2); }
+
+.muted { color: var(--muted); font-size: 13px; }
+.row { display: flex; gap: 10px; align-items: center; }
+.row > * { flex: 1; }
+.actions { display: flex; gap: 8px; margin: 14px 0; flex-wrap: wrap; }
+.actions > * { flex: 1; min-width: 0; }
+
+/* Cards & stats */
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.stat, .card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+.stat strong { font-size: 26px; display: block; font-weight: 800; letter-spacing: -.5px; }
+.stat span { font-size: 12px; color: var(--muted); font-weight: 600; }
+.stat.accent strong { color: var(--accent); }
+.stat.warn strong { color: var(--warn); }
+
+.card + .card { margin-top: 10px; }
+.section-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.section-title h3 { margin: 0; }
+
+/* Forms */
+label { display: block; font-size: 12px; font-weight: 700; color: var(--text2); margin: 14px 0 6px; letter-spacing: .2px; }
+input, select, textarea {
+  width: 100%; background: var(--surface2); color: var(--text);
+  border: 1px solid var(--border2); border-radius: var(--radius-sm);
+  padding: 13px 14px; -webkit-appearance: none;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft);
+}
+textarea { min-height: 96px; resize: vertical; }
+.search {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 14px; padding: 13px 16px 13px 42px; margin: 0 0 12px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='%237d9285' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.442.656a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: 14px center;
+}
+
+.filters { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.filters select { padding: 10px 12px; font-size: 13px; }
+
+/* Animal cards */
+.animal {
+  display: flex; gap: 14px; align-items: center;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 12px; margin-bottom: 10px;
+  cursor: pointer; transition: border-color .15s, background .15s;
+}
+.animal:active { background: var(--surface2); }
+.thumb {
+  width: 72px; height: 72px; border-radius: 14px; object-fit: cover;
+  background: var(--surface3); flex: none;
+}
+.grow { flex: 1; min-width: 0; }
+.animal h3 { font-size: 16px; margin: 0 0 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.meta { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.genes { font-size: 13px; color: var(--text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.tag {
+  display: inline-flex; align-items: center;
+  background: var(--surface3); border-radius: 20px;
+  padding: 3px 9px; font-size: 11px; font-weight: 650; color: var(--text2);
+}
+.tag.het { background: var(--warn-soft); color: #fcd34d; }
+.tag.status { background: var(--accent-soft); color: #86efac; }
+.tag.status.sale { background: rgba(56,189,248,.15); color: #7dd3fc; }
+.tag.status.sold { background: var(--danger-soft); color: #fca5a5; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  border-radius: 20px; padding: 4px 10px; font-size: 11px; font-weight: 700;
+  background: var(--surface3); color: var(--text2);
+}
+.badge.ok { background: var(--accent-soft); color: #86efac; }
+.badge.warn { background: var(--warn-soft); color: #fcd34d; }
+.badge.danger { background: var(--danger-soft); color: #fca5a5; }
+
+.empty {
+  text-align: center; padding: 48px 20px; color: var(--muted);
+}
+.empty .big { font-size: 48px; margin-bottom: 12px; }
+.empty h3 { color: var(--text2); margin-bottom: 6px; }
+
+.line {
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.line:last-child { border-bottom: 0; }
+.line b {
+  display: block; text-transform: uppercase; font-size: 10px;
+  letter-spacing: .6px; color: var(--muted); margin-bottom: 4px; font-weight: 700;
+}
+
+.photoBox {
+  border: 1.5px dashed var(--border2); border-radius: var(--radius);
+  padding: 16px; text-align: center; background: var(--surface2);
+}
+.photoBox img {
+  display: none; max-width: 100%; max-height: 220px;
+  border-radius: 12px; margin: 0 auto 12px;
+}
+
+.table { overflow: auto; border-radius: var(--radius-sm); }
+.table table { width: 100%; border-collapse: collapse; min-width: 520px; }
+.table th, .table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--border);
+  text-align: left; font-size: 13px;
+}
+.table th { color: var(--muted); font-weight: 650; font-size: 11px; text-transform: uppercase; letter-spacing: .4px; }
+.table tr:last-child td { border-bottom: 0; }
+
+.notice {
+  padding: 13px 14px; border-radius: var(--radius-sm);
+  background: var(--warn-soft); color: #fcd34d; margin: 10px 0;
+  font-size: 13.5px; line-height: 1.4;
+}
+.notice.ok { background: var(--accent-soft); color: #86efac; }
+.notice.danger { background: var(--danger-soft); color: #fca5a5; }
+
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+.progress {
+  height: 8px; background: var(--surface3); border-radius: 20px; overflow: hidden; margin-top: 8px;
+}
+.progress i { display: block; height: 100%; background: var(--accent); border-radius: 20px; transition: width .4s; }
+
+.chip-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin: 10px 0; -webkit-overflow-scrolling: touch; }
+.chip {
+  flex: none; padding: 8px 14px; border-radius: 20px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  font-size: 13px; font-weight: 650; color: var(--text2);
+}
+.chip.active { background: var(--accent); color: #042f14; border-color: var(--accent); }
+
+/* Weight sparkline */
+.spark { height: 36px; display: flex; align-items: flex-end; gap: 3px; margin-top: 8px; }
+.spark span {
+  flex: 1; background: var(--accent); border-radius: 3px 3px 0 0;
+  min-height: 3px; opacity: .85;
+}
+
+/* Modal / overlay */
+.overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(0,0,0,.65); backdrop-filter: blur(4px);
+  display: flex; align-items: flex-end; justify-content: center;
+  padding: 16px; padding-bottom: calc(16px + var(--safe-bottom));
+}
+.sheet {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px 20px 16px 16px; width: 100%; max-width: 520px;
+  max-height: 85vh; overflow: auto; padding: 20px;
+}
+.sheet h2 { margin-bottom: 16px; }
+
+.detail-photo {
+  width: 100%; max-height: 280px; object-fit: cover;
+  border-radius: var(--radius); margin-bottom: 14px;
+}
+
+.quick-actions {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 14px 0;
+}
+.quick-actions button {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 12px 6px; font-size: 11px; background: var(--surface2);
+}
+.quick-actions .ico { font-size: 20px; }
+
+.countdown {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800; font-size: 18px; color: var(--accent);
+}
+
+@media (min-width: 640px) {
+  .grid { grid-template-columns: repeat(4, 1fr); }
+  .filters { grid-template-columns: repeat(4, 1fr); }
+  .bottom-nav { display: none; }
+  .app { padding-bottom: 24px; }
+  .head { padding-bottom: 12px; }
+  .desktop-nav { display: flex !important; gap: 6px; margin-top: 14px; overflow-x: auto; }
+  .desktop-nav button {
+    white-space: nowrap; padding: 9px 14px; font-size: 13px;
+    background: var(--surface2); color: var(--text2);
+  }
+  .desktop-nav button.active { background: var(--accent); color: #042f14; }
+}
+.desktop-nav { display: none; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="head">
+    <div class="brand-row">
+      <div>
+        <div class="brand">🐍 <span>Naga</span> Exotics</div>
+        <div class="sub">Breeder Pro • Offline</div>
+      </div>
+      <div class="head-actions">
+        <button class="icon" onclick="show('backup')" title="Backup">💾</button>
+        <button class="icon primary" onclick="newAnimal()" title="Add Snake">＋</button>
+      </div>
+    </div>
+    <div class="desktop-nav">
+      <button data-view="dashboard" onclick="show('dashboard')">Dashboard</button>
+      <button data-view="animals" onclick="show('animals')">Snakes</button>
+      <button data-view="care" onclick="show('care')">Care</button>
+      <button data-view="breeding" onclick="show('breeding')">Breeding</button>
+      <button data-view="clutches" onclick="show('clutches')">Clutches</button>
+      <button data-view="lineage" onclick="show('lineage')">Lineage</button>
+      <button data-view="backup" onclick="show('backup')">Backup</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="view active">
+      <h2>Dashboard</h2>
+      <div class="grid" id="dashStats"></div>
+      <div id="dashAlerts" style="margin-top:12px"></div>
+      <div class="card" style="margin-top:12px">
+        <div class="section-title"><h3>Upcoming hatches</h3></div>
+        <div id="dashHatches"></div>
+      </div>
+      <div class="card">
+        <div class="section-title"><h3>Recent activity</h3></div>
+        <div id="dashActivity"></div>
+      </div>
+      <div class="card">
+        <h3>Quick search</h3>
+        <input class="search" placeholder="Name, gene, het, ID, notes…" oninput="quickSearch(this.value)">
+        <div id="quickResults"></div>
+      </div>
+    </section>
+
+    <!-- ANIMALS -->
+    <section id="animals" class="view">
+      <div class="actions" style="margin-top:0">
+        <button class="primary" onclick="newAnimal()">＋ Add Snake</button>
+        <button onclick="bulkWeight()">⚖️ Bulk Weight</button>
+        <button onclick="bulkFeed()">🍽️ Bulk Feed</button>
+      </div>
+      <input id="aq" class="search" placeholder="Search snakes…" oninput="renderAnimals()">
+      <div class="filters">
+        <select id="asex" onchange="renderAnimals()">
+          <option value="">All sexes</option><option>Male</option><option>Female</option><option>Unknown</option>
+        </select>
+        <select id="astatus" onchange="renderAnimals()">
+          <option value="">All statuses</option>
+          <option>Holdback</option><option>Breeding Male</option><option>Breeding Female</option>
+          <option>Proven</option><option>For Sale</option><option>Sold</option>
+        </select>
+        <select id="agene" onchange="renderAnimals()"><option value="">All genes</option></select>
+        <select id="asort" onchange="renderAnimals()">
+          <option value="name">Sort: Name</option>
+          <option value="weight">Sort: Weight</option>
+          <option value="new">Sort: Newest</option>
+          <option value="fed">Sort: Last fed</option>
+        </select>
+      </div>
+      <div id="animalList"></div>
+    </section>
+
+    <!-- ANIMAL FORM -->
+    <section id="animalForm" class="view">
+      <button class="ghost small" onclick="show('animals')">← Back</button>
+      <h2 id="afTitle" style="margin-top:12px">Add Snake</h2>
+      <form id="af">
+        <input type="hidden" id="aid">
+        <label>Photo</label>
+        <div class="photoBox">
+          <img id="aprev">
+          <div id="aph">Tap to add a photo</div>
+          <input id="afile" type="file" accept="image/*" multiple style="display:none">
+          <div class="actions" style="margin-top:10px">
+            <button type="button" onclick="document.getElementById('afile').click()">Choose Photo</button>
+            <button type="button" class="ghost" onclick="removePhoto()">Remove</button>
+          </div>
+        </div>
+        <div class="two">
+          <div><label>Name / ID *</label><input id="aname" required placeholder="e.g. BH Pastel Mojave ♂"></div>
+          <div><label>Sex</label>
+            <select id="asexf"><option>Unknown</option><option>Male</option><option>Female</option></select>
+          </div>
+        </div>
+        <label>Genes / Morph</label>
+        <input id="agenes" placeholder="Black Pastel Mojave Yellow Belly">
+        <label>Het / Possible Het</label>
+        <input id="ahets" placeholder="Het Clown, Pos Het Pied">
+        <label>Breeding Status</label>
+        <select id="astatusf">
+          <option>Holdback</option><option>Breeding Male</option><option>Breeding Female</option>
+          <option>Proven</option><option>For Sale</option><option>Sold</option>
+        </select>
+        <div class="three">
+          <div><label>Weight (g)</label><input id="aweight" type="number" min="0" placeholder="0"></div>
+          <div><label>Date of Birth</label><input id="adob" type="date"></div>
+          <div><label>Location</label><input id="alocation" placeholder="Rack A / Tub 4"></div>
+        </div>
+        <label>Parents</label>
+        <div class="two">
+          <select id="asire"><option value="">Sire unknown</option></select>
+          <select id="adam"><option value="">Dam unknown</option></select>
+        </div>
+        <label>Notes</label>
+        <textarea id="anotes" placeholder="Lineage notes, temperament, project goals…"></textarea>
+        <div class="actions">
+          <button type="button" class="ghost" onclick="show('animals')">Cancel</button>
+          <button class="primary">Save Snake</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ANIMAL DETAIL -->
+    <section id="animalDetail" class="view">
+      <button class="ghost small" onclick="show('animals')">← Back</button>
+      <div id="animalDetailBody" style="margin-top:12px"></div>
+    </section>
+
+    <!-- CARE -->
+    <section id="care" class="view">
+      <h2>Care Log</h2>
+      <div class="quick-actions">
+        <button onclick="logCare('feed')"><span class="ico">🍽️</span>Feed</button>
+        <button onclick="logCare('weight')"><span class="ico">⚖️</span>Weight</button>
+        <button onclick="logCare('shed')"><span class="ico">🐍</span>Shed</button>
+        <button onclick="logCare('health')"><span class="ico">❤️</span>Health</button>
+      </div>
+      <div class="card">
+        <div class="section-title"><h3>Recent records</h3></div>
+        <div id="careTable"></div>
+      </div>
+    </section>
+
+    <!-- CARE FORM -->
+    <section id="careForm" class="view">
+      <button class="ghost small" onclick="show('care')">← Back</button>
+      <h2 id="cfTitle" style="margin-top:12px">Log Care</h2>
+      <form id="cf">
+        <input type="hidden" id="cid"><input type="hidden" id="ctype">
+        <label>Snake</label>
+        <select id="csnake" required></select>
+        <div class="two">
+          <div><label>Date</label><input id="cdate" type="date"></div>
+          <div><label id="cvalueLabel">Value</label><input id="cvalue" placeholder=""></div>
+        </div>
+        <label>Result / Details</label>
+        <input id="cresult" placeholder="Ate, refused, complete shed…">
+        <label>Notes</label>
+        <textarea id="cnotes"></textarea>
+        <div class="actions">
+          <button type="button" class="ghost" onclick="show('care')">Cancel</button>
+          <button class="primary">Save Record</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- BREEDING -->
+    <section id="breeding" class="view">
+      <h2>🧬 Breeding Planner</h2>
+      <div class="card">
+        <div class="two">
+          <div>
+            <label>Male</label>
+            <select id="bp1"></select>
+          </div>
+          <div>
+            <label>Female</label>
+            <select id="bp2"></select>
+          </div>
+        </div>
+        <label>Pairing notes</label>
+        <input id="bnotes" placeholder="Project goal, lock dates…">
+        <div class="actions">
+          <button class="primary" onclick="calculateBreeding()">Calculate Odds</button>
+          <button onclick="savePairing()">Save Pairing</button>
+        </div>
+        <div id="bresult"></div>
+      </div>
+      <div class="card">
+        <div class="section-title"><h3>Saved pairings</h3></div>
+        <div id="pairings"></div>
+      </div>
+    </section>
+
+    <!-- CLUTCHES -->
+    <section id="clutches" class="view">
+      <h2>🥚 Clutches</h2>
+      <div class="actions" style="margin-top:0">
+        <button class="primary" onclick="newClutch()">＋ Add Clutch</button>
+      </div>
+      <div id="clutchList"></div>
+    </section>
+
+    <section id="clutchForm" class="view">
+      <button class="ghost small" onclick="show('clutches')">← Back</button>
+      <h2 id="clTitle" style="margin-top:12px">Add Clutch</h2>
+      <form id="clf">
+        <input type="hidden" id="clid">
+        <label>Parents / Pairing</label>
+        <select id="clpair"></select>
+        <div class="three">
+          <div><label>Lay Date</label><input id="cldate" type="date"></div>
+          <div><label>Egg Count</label><input id="cleggs" type="number" min="0" value="1"></div>
+          <div><label>Temp °C</label><input id="cltemp" type="number" step=".1" value="31.5"></div>
+        </div>
+        <label>Expected Hatch Date</label>
+        <input id="clhatch" type="date">
+        <label>Notes</label>
+        <textarea id="clnotes"></textarea>
+        <div class="actions">
+          <button type="button" class="ghost" onclick="show('clutches')">Cancel</button>
+          <button class="primary">Save Clutch</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="clutchDetail" class="view">
+      <button class="ghost small" onclick="show('clutches')">← Back</button>
+      <div id="clutchBody" style="margin-top:12px"></div>
+    </section>
+
+    <!-- LINEAGE -->
+    <section id="lineage" class="view">
+      <h2>🌳 Lineage</h2>
+      <p class="muted">Select a snake to view parents and offspring.</p>
+      <select id="linSnake" onchange="renderLineage()" style="margin-top:8px"></select>
+      <div id="linBody" style="margin-top:14px"></div>
+    </section>
+
+    <!-- BACKUP -->
+    <section id="backup" class="view">
+      <h2>Backup & Data</h2>
+      <div class="notice ok">
+        <b>V10 genetics upgrade:</b> Data is now saved in IndexedDB (much larger limit on iPhone) and photos are compressed automatically.<br>
+        Still export a backup before clearing Safari data, updating iOS, or switching phones.
+      </div>
+      <div class="card">
+        <h3>Full backup</h3>
+        <p class="muted">Snakes, photos, care history, pairings, clutches.</p>
+        <button class="primary" onclick="exportAll()">Export JSON Backup</button>
+      </div>
+      <div class="card">
+        <h3>Restore backup</h3>
+        <input id="restore" type="file" accept=".json,application/json">
+      </div>
+      <div class="card">
+        <h3>CSV export</h3>
+        <button onclick="exportCSV()">Export Snake List (CSV)</button>
+      </div>
+      <div class="card">
+        <h3>Danger zone</h3>
+        <button class="danger" onclick="if(confirm('Delete ALL data? This cannot be undone.')){db={snakes:[],care:[],pairings:[],clutches:[],settings:{version:10}};save();show('dashboard')}">Clear All Data</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom navigation (mobile) -->
+  <nav class="bottom-nav">
+    <button data-view="dashboard" onclick="show('dashboard')"><span class="ico">📊</span>Home</button>
+    <button data-view="animals" onclick="show('animals')"><span class="ico">🐍</span>Snakes</button>
+    <button data-view="care" onclick="show('care')"><span class="ico">📋</span>Care</button>
+    <button data-view="breeding" onclick="show('breeding')"><span class="ico">🧬</span>Breed</button>
+    <button data-view="clutches" onclick="show('clutches')"><span class="ico">🥚</span>Clutch</button>
+  </nav>
+</div>
+
+<script>
+const K = 'naga_exotics_v11_data';
+const IDB_NAME = 'NagaExoticsDB';
+const IDB_STORE = 'data';
+const LEGACY = ['naga_exotics_v10_data','naga_exotics_v9_data','naga_exotics_v8_data','naga_exotics_v7_data','naga_exotics_v6_data','naga_exotics_v5_data','naga_exotics_v4','naga_exotics_v2'];
+let db = { snakes: [], care: [], pairings: [], clutches: [], settings: { version: 11 } };
+let photoData = '';
+let photoList = [];
+let _idb = null;
+let _saveTimer = null;
+
+function $(id) { return document.getElementById(id); }
+
+// ---------- STORAGE (IndexedDB primary, localStorage fallback) ----------
+function openIDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(IDB_NAME, 1);
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains(IDB_STORE)) d.createObjectStore(IDB_STORE);
+    };
+    req.onsuccess = e => { _idb = e.target.result; resolve(_idb); };
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+function idbGet() {
+  return openIDB().then(d => new Promise((resolve, reject) => {
+    const tx = d.transaction(IDB_STORE, 'readonly');
+    const req = tx.objectStore(IDB_STORE).get(K);
+    req.onsuccess = () => resolve(req.result || null);
+    req.onerror = () => reject(req.error);
+  }));
+}
+
+function idbSet(data) {
+  return openIDB().then(d => new Promise((resolve, reject) => {
+    const tx = d.transaction(IDB_STORE, 'readwrite');
+    const req = tx.objectStore(IDB_STORE).put(data, K);
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+  }));
+}
+
+function parseLoaded(raw) {
+  if (!raw) return null;
+  const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
+  if (Array.isArray(parsed)) {
+    return { snakes: parsed, care: [], pairings: [], clutches: [], settings: { version: 11 } };
+  }
+  return {
+    snakes: parsed.snakes || [],
+    care: parsed.care || [],
+    pairings: (parsed.pairings || []).map(p => ({ ...p, status: p.status || 'Planned' })),
+    clutches: parsed.clutches || [],
+    settings: { version: 11 }
+  };
+}
+
+async function loadData() {
+  // 1. Try IndexedDB first (handles large photo data)
+  try {
+    const fromIDB = await idbGet();
+    if (fromIDB) {
+      db = parseLoaded(fromIDB);
+      return;
+    }
+  } catch (e) { console.warn('IDB load failed', e); }
+
+  // 2. Fall back to localStorage (legacy + small collections)
+  try {
+    let raw = localStorage.getItem(K);
+    if (!raw) {
+      for (const k of LEGACY) {
+        raw = localStorage.getItem(k);
+        if (raw) break;
+      }
+    }
+    if (raw) {
+      db = parseLoaded(raw);
+      // Migrate into IndexedDB for future reliability
+      try { await idbSet(db); } catch (e) {}
+    }
+  } catch (e) { console.warn('localStorage load failed', e); }
+}
+
+function save() {
+  // Debounce rapid saves
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(doSave, 80);
+}
+
+async function doSave() {
+  const payload = JSON.parse(JSON.stringify(db)); // clone
+  // Prefer IndexedDB
+  try {
+    await idbSet(payload);
+    // Keep a lightweight localStorage copy without large photos as emergency backup
+    try {
+      const light = {
+        ...payload,
+        snakes: payload.snakes.map(s => ({
+          ...s,
+          photo: undefined,
+          photos: undefined,
+          _hasPhoto: !!(s.photo || (s.photos && s.photos.length))
+        }))
+      };
+      localStorage.setItem(K + '_meta', JSON.stringify({
+        count: payload.snakes.length,
+        saved: new Date().toISOString(),
+        version: 11
+      }));
+    } catch (e) {}
+    return;
+  } catch (e) {
+    console.warn('IDB save failed, trying localStorage', e);
+  }
+
+  // Fallback: localStorage (may fail if too many photos)
+  try {
+    localStorage.setItem(K, JSON.stringify(payload));
+  } catch (err) {
+    // Quota exceeded — strip photos and retry once
+    try {
+      const stripped = {
+        ...payload,
+        snakes: payload.snakes.map(s => ({ ...s, photo: '', photos: [] }))
+      };
+      localStorage.setItem(K, JSON.stringify(stripped));
+      alert('Storage almost full. Photos were not saved this time. Export a backup and remove some photos, or the data may not persist.');
+    } catch (e2) {
+      alert('Could not save data — storage is full. Please Export a backup immediately from the Backup tab.');
+    }
+  }
+}
+
+// Compress / resize photos before storing (critical for iPhone)
+function compressImage(dataUrl, maxW = 900, quality = 0.72) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      let w = img.width, h = img.height;
+      if (w <= maxW && dataUrl.length < 180000) { resolve(dataUrl); return; }
+      if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = () => resolve(dataUrl);
+    img.src = dataUrl;
+  });
+}
+
+// Kick off load before UI init
+let _ready = loadData();
+function esc(s = '') {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c]));
+}
+function today() { return new Date().toISOString().slice(0, 10); }
+function daysBetween(a, b) {
+  const d1 = new Date(a), d2 = new Date(b);
+  return Math.round((d2 - d1) / 86400000);
+}
+function placeholder() {
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><rect width="120" height="120" fill="#182820"/><text x="60" y="72" text-anchor="middle" font-size="42">🐍</text></svg>'
+  );
+}
+
+function show(v) {
+  document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
+  $(v).classList.add('active');
+  document.querySelectorAll('.bottom-nav button, .desktop-nav button').forEach(x => {
+    x.classList.toggle('active', x.dataset.view === v);
+  });
+  if (v === 'dashboard') dash();
+  if (v === 'animals') renderAnimals();
+  if (v === 'care') renderCare();
+  if (v === 'breeding') setupBreeding();
+  if (v === 'clutches') renderClutches();
+  if (v === 'lineage') setupLineage();
+}
+
+// ---------- DASHBOARD ----------
+function dash() {
+  const ss = db.snakes;
+  const males = ss.filter(s => s.sex === 'Male').length;
+  const females = ss.filter(s => s.sex === 'Female').length;
+  const forSale = ss.filter(s => s.status === 'For Sale').length;
+  const activeClutches = db.clutches.filter(c => c.hatchDate && c.hatchDate >= today()).length;
+
+  $('dashStats').innerHTML = `
+    <div class="stat"><strong>${ss.length}</strong><span>Snakes</span></div>
+    <div class="stat"><strong>${males}</strong><span>Males</span></div>
+    <div class="stat"><strong>${females}</strong><span>Females</span></div>
+    <div class="stat accent"><strong>${activeClutches}</strong><span>Active clutches</span></div>
+  `;
+
+  // Alerts
+  const noWeight = ss.filter(s => !s.weight && !db.care.some(c => c.snakeId === s.id && c.type === 'weight')).length;
+  const overdueFeed = ss.filter(s => {
+    const last = db.care.filter(c => c.snakeId === s.id && c.type === 'feed').sort((a,b) => b.date.localeCompare(a.date))[0];
+    if (!last) return true;
+    return daysBetween(last.date, today()) > 21;
+  }).length;
+
+  let alerts = [];
+  if (noWeight) alerts.push(`<div class="notice">⚠️ ${noWeight} snake(s) have no weight recorded.</div>`);
+  if (overdueFeed) alerts.push(`<div class="notice warn">🍽️ ${overdueFeed} snake(s) may be overdue for feeding (>21 days).</div>`);
+  if (!alerts.length) alerts.push(`<div class="notice ok">✓ Collection looks healthy.</div>`);
+  $('dashAlerts').innerHTML = alerts.join('');
+
+  // Upcoming hatches
+  const upcoming = db.clutches
+    .filter(c => c.hatchDate)
+    .sort((a,b) => a.hatchDate.localeCompare(b.hatchDate))
+    .slice(0, 6);
+  $('dashHatches').innerHTML = upcoming.length ? upcoming.map(c => {
+    const p = db.pairings.find(x => x.id === c.pairingId);
+    const m = db.snakes.find(s => s.id === p?.maleId);
+    const f = db.snakes.find(s => s.id === p?.femaleId);
+    const days = daysBetween(today(), c.hatchDate);
+    const label = days < 0 ? `${Math.abs(days)}d overdue` : days === 0 ? 'Today!' : `${days}d left`;
+    return `<div class="line">
+      <b>${esc(c.name || 'Clutch')}</b>
+      ${esc(m?.name || '?')} × ${esc(f?.name || '?')} • ${c.eggs} eggs<br>
+      <span class="countdown">${label}</span> · ${c.hatchDate}
+    </div>`;
+  }).join('') : '<div class="muted">No hatch dates set yet.</div>';
+
+  // Recent activity
+  const recent = [...db.care].sort((a,b) => b.date.localeCompare(a.date)).slice(0, 8);
+  $('dashActivity').innerHTML = recent.length ? recent.map(r => {
+    const s = db.snakes.find(x => x.id === r.snakeId);
+    return `<div class="line">${r.date} · <b>${esc(r.type)}</b> · ${esc(s?.name || 'Deleted')} ${r.value ? '· ' + esc(r.value) : ''}</div>`;
+  }).join('') : '<div class="muted">No care records yet.</div>';
+
+  quickSearch('');
+}
+
+function quickSearch(q) {
+  const a = db.snakes.filter(s =>
+    (s.name + ' ' + (s.genes||'') + ' ' + (s.hets||'') + ' ' + (s.notes||'') + ' ' + (s.location||''))
+      .toLowerCase().includes(q.toLowerCase())
+  ).slice(0, 6);
+  $('quickResults').innerHTML = a.length ? a.map(animalCard).join('') : (q ? '<div class="empty"><div class="muted">No matches</div></div>' : '');
+}
+
+// ---------- ANIMALS ----------
+function lastCare(snakeId, type) {
+  return db.care.filter(c => c.snakeId === snakeId && (!type || c.type === type))
+    .sort((a,b) => b.date.localeCompare(a.date))[0];
+}
+
+function animalCard(s) {
+  const lastFeed = lastCare(s.id, 'feed');
+  const lastW = lastCare(s.id, 'weight');
+  const statusClass = s.status === 'For Sale' ? 'sale' : s.status === 'Sold' ? 'sold' : '';
+  return `<div class="animal" onclick="animalDetail('${s.id}')">
+    <img class="thumb" src="${(s.photos && s.photos[0]) || s.photo || placeholder()}" alt="">
+    <div class="grow">
+      <h3>${esc(s.name || 'Unnamed')}</h3>
+      <div class="meta">${s.sex || '—'} ${s.weight ? '· ' + esc(s.weight) + 'g' : ''} ${s.location ? '· ' + esc(s.location) : ''}</div>
+      <div class="genes">${esc(s.genes || 'No genes recorded')}</div>
+      <div class="tags">
+        ${s.status ? `<span class="tag status ${statusClass}">${esc(s.status)}</span>` : ''}
+        ${s.hets ? `<span class="tag het">${esc(s.hets)}</span>` : ''}
+        ${lastFeed ? `<span class="tag">Fed ${lastFeed.date}</span>` : ''}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderAnimals() {
+  const q = ($('aq').value || '').toLowerCase();
+  const sex = $('asex').value;
+  const st = $('astatus').value;
+  const g = $('agene').value;
+  const sort = $('asort').value;
+
+  let a = db.snakes.filter(s => {
+    if (q && !(s.name + ' ' + (s.genes||'') + ' ' + (s.hets||'') + ' ' + (s.notes||'') + ' ' + (s.location||'')).toLowerCase().includes(q)) return false;
+    if (sex && s.sex !== sex) return false;
+    if (st && s.status !== st) return false;
+    if (g && !(s.genes||'').toLowerCase().includes(g.toLowerCase())) return false;
+    return true;
+  });
+
+  if (sort === 'name') a.sort((x,y) => (x.name||'').localeCompare(y.name||''));
+  if (sort === 'weight') a.sort((x,y) => (Number(y.weight)||0) - (Number(x.weight)||0));
+  if (sort === 'new') a = a.slice().reverse();
+  if (sort === 'fed') {
+    a.sort((x,y) => {
+      const lx = lastCare(x.id, 'feed')?.date || '';
+      const ly = lastCare(y.id, 'feed')?.date || '';
+      return ly.localeCompare(lx);
+    });
+  }
+
+  $('animalList').innerHTML = a.length ? a.map(animalCard).join('') :
+    '<div class="empty"><div class="big">🐍</div><h3>No snakes found</h3><p>Add your first snake to get started.</p></div>';
+
+  // Gene filter options
+  const genes = [...new Set(db.snakes.flatMap(s => (s.genes||'').split(/[,\s\/]+/).map(x => x.trim()).filter(Boolean)))].sort();
+  const old = $('agene').value;
+  $('agene').innerHTML = '<option value="">All genes</option>' + genes.map(g => `<option>${esc(g)}</option>`).join('');
+  if (genes.includes(old)) $('agene').value = old;
+}
+
+function fillParents() {
+  const opts = '<option value="">Unknown</option>' + db.snakes.map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join('');
+  $('asire').innerHTML = opts;
+  $('adam').innerHTML = opts;
+}
+
+function newAnimal() {
+  photoData = '';
+  photoList = [];
+  $('af').reset();
+  $('aid').value = '';
+  $('afTitle').textContent = 'Add Snake';
+  $('aprev').style.display = 'none';
+  $('aph').style.display = 'block';
+  if ($('aphotos')) $('aphotos').innerHTML = '';
+  fillParents();
+  show('animalForm');
+}
+
+function editAnimal(id) {
+  const s = db.snakes.find(x => x.id === id);
+  if (!s) return;
+  newAnimal();
+  $('afTitle').textContent = 'Edit Snake';
+  $('aid').value = s.id;
+  $('aname').value = s.name || '';
+  $('asexf').value = s.sex || 'Unknown';
+  $('agenes').value = s.genes || '';
+  $('ahets').value = s.hets || '';
+  $('astatusf').value = s.status || 'Holdback';
+  $('aweight').value = s.weight || '';
+  $('adob').value = s.dob || '';
+  $('alocation').value = s.location || '';
+  $('anotes').value = s.notes || '';
+  $('asire').value = s.sire || '';
+  $('adam').value = s.dam || '';
+  photoList = Array.isArray(s.photos) ? [...s.photos] : (s.photo ? [s.photo] : []);
+  photoData = photoList[0] || '';
+  if (photoData) {
+    $('aprev').src = photoData;
+    $('aprev').style.display = 'block';
+    $('aph').style.display = 'none';
+  }
+  renderPhotoThumbs();
+}
+
+function renderPhotoThumbs() {
+  let box = $('aphotos');
+  if (!box) {
+    const pb = document.querySelector('.photoBox');
+    if (pb) {
+      box = document.createElement('div');
+      box.id = 'aphotos';
+      box.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;margin-top:10px';
+      pb.appendChild(box);
+    }
+  }
+  if (!box) return;
+  box.innerHTML = photoList.map((p, i) => `
+    <div style="position:relative">
+      <img src="${p}" style="width:64px;height:64px;object-fit:cover;border-radius:10px">
+      <button type="button" class="small danger" style="position:absolute;top:-6px;right:-6px;padding:2px 6px;font-size:11px"
+        onclick="photoList.splice(${i},1);photoData=photoList[0]||'';renderPhotoThumbs();if(!photoList.length){removePhoto()}">×</button>
+    </div>`).join('');
+}
+
+function removePhoto() {
+  photoData = '';
+  photoList = [];
+  $('aprev').style.display = 'none';
+  $('aph').style.display = 'block';
+  $('afile').value = '';
+  if ($('aphotos')) $('aphotos').innerHTML = '';
+}
+
+$('afile').onchange = e => {
+  const files = [...e.target.files];
+  if (!files.length) return;
+  files.forEach(f => {
+    const r = new FileReader();
+    r.onload = async () => {
+      const compressed = await compressImage(r.result);
+      photoList.push(compressed);
+      photoData = photoList[0];
+      $('aprev').src = photoData;
+      $('aprev').style.display = 'block';
+      $('aph').style.display = 'none';
+      renderPhotoThumbs();
+    };
+    r.readAsDataURL(f);
+  });
+  e.target.value = '';
+};
+
+$('af').onsubmit = e => {
+  e.preventDefault();
+  const id = $('aid').value || crypto.randomUUID();
+  const existing = db.snakes.find(x => x.id === id);
+  const s = {
+    id,
+    name: $('aname').value.trim(),
+    sex: $('asexf').value,
+    genes: $('agenes').value.trim(),
+    hets: $('ahets').value.trim(),
+    status: $('astatusf').value,
+    weight: $('aweight').value,
+    dob: $('adob').value,
+    location: $('alocation').value.trim(),
+    sire: $('asire').value,
+    dam: $('adam').value,
+    notes: $('anotes').value.trim(),
+    photo: photoData || (photoList[0] || ''),
+    photos: photoList.length ? photoList : (photoData ? [photoData] : []),
+    created: existing?.created || today()
+  };
+  const i = db.snakes.findIndex(x => x.id === id);
+  if (i >= 0) db.snakes[i] = s;
+  else db.snakes.unshift(s);
+  save();
+  animalDetail(id);
+};
+
+function weightSpark(snakeId) {
+  const weights = db.care.filter(c => c.snakeId === snakeId && c.type === 'weight' && c.value)
+    .sort((a,b) => a.date.localeCompare(b.date))
+    .slice(-12);
+  if (weights.length < 2) return '';
+  const nums = weights.map(w => parseFloat(w.value) || 0);
+  const max = Math.max(...nums), min = Math.min(...nums);
+  const range = max - min || 1;
+  return `<div class="spark">${nums.map(n => {
+    const h = 8 + ((n - min) / range) * 28;
+    return `<span style="height:${h}px"></span>`;
+  }).join('')}</div>`;
+}
+
+function animalDetail(id) {
+  const s = db.snakes.find(x => x.id === id);
+  if (!s) return;
+  const sire = db.snakes.find(x => x.id === s.sire);
+  const dam = db.snakes.find(x => x.id === s.dam);
+  const records = db.care.filter(c => c.snakeId === id).sort((a,b) => b.date.localeCompare(a.date)).slice(0, 12);
+  const kids = db.snakes.filter(x => x.sire === id || x.dam === id);
+  const photos = Array.isArray(s.photos) ? s.photos : (s.photo ? [s.photo] : []);
+
+  $('animalDetailBody').innerHTML = `
+    ${photos.length ? `
+      <div style="display:flex;gap:8px;overflow-x:auto;margin-bottom:12px;-webkit-overflow-scrolling:touch">
+        ${photos.map(p => `<img class="detail-photo" src="${p}" style="max-width:85%;flex:none;margin:0">`).join('')}
+      </div>` : ''}
+    <h2>${esc(s.name)}</h2>
+    <div class="meta" style="margin-bottom:12px">${s.sex} · ${esc(s.status || 'Holdback')} ${s.location ? '· ' + esc(s.location) : ''}</div>
+    
+    <div class="quick-actions">
+      <button onclick="editAnimal('${s.id}')"><span class="ico">✏️</span>Edit</button>
+      <button onclick="setCareSnake('${s.id}');logCare('feed')"><span class="ico">🍽️</span>Feed</button>
+      <button onclick="setCareSnake('${s.id}');logCare('weight')"><span class="ico">⚖️</span>Weight</button>
+      <button onclick="showQR('${s.id}')"><span class="ico">📱</span>QR</button>
+    </div>
+    <div class="actions" style="margin-top:0">
+      <button onclick="printSnakeHistory('${s.id}')">🖨️ Print History</button>
+      <button class="danger" onclick="deleteAnimal('${s.id}')">Delete</button>
+    </div>
+
+    <div class="card">
+      <div class="line"><b>Genes / Morph</b>${esc(s.genes || 'Not recorded')}</div>
+      <div class="line"><b>Het / Possible Het</b>${esc(s.hets || 'None')}</div>
+      <div class="line"><b>Weight</b>${s.weight ? esc(s.weight) + ' g' : 'Not recorded'}${weightSpark(s.id)}</div>
+      <div class="line"><b>Date of Birth</b>${esc(s.dob || 'Not recorded')}</div>
+      <div class="line"><b>Parents</b>Sire: ${esc(sire?.name || 'Unknown')} · Dam: ${esc(dam?.name || 'Unknown')}</div>
+      <div class="line"><b>Notes</b>${esc(s.notes || 'None')}</div>
+    </div>
+
+    ${kids.length ? `<div class="card"><h3>Offspring (${kids.length})</h3>${kids.map(k => `<div class="line">${esc(k.name)} · ${esc(k.genes||'')}</div>`).join('')}</div>` : ''}
+
+    <div class="card">
+      <h3>Recent care</h3>
+      ${records.length ? records.map(r => `<div class="line">${r.date} · <b>${esc(r.type)}</b> · ${esc(r.value || r.result || '')}</div>`).join('') : '<div class="muted">No care records.</div>'}
+    </div>
+  `;
+  show('animalDetail');
+}
+
+function printSnakeHistory(id) {
+  const s = db.snakes.find(x => x.id === id);
+  if (!s) return;
+  const sire = db.snakes.find(x => x.id === s.sire);
+  const dam = db.snakes.find(x => x.id === s.dam);
+  const records = db.care.filter(c => c.snakeId === id).sort((a,b) => b.date.localeCompare(a.date));
+  const kids = db.snakes.filter(x => x.sire === id || x.dam === id);
+  const weights = records.filter(r => r.type === 'weight' && r.value);
+  const feeds = records.filter(r => r.type === 'feed');
+  const sheds = records.filter(r => r.type === 'shed');
+  const health = records.filter(r => r.type === 'health');
+  const photo = (s.photos && s.photos[0]) || s.photo || '';
+
+  const w = window.open('', '_blank');
+  if (!w) { alert('Please allow pop-ups to print'); return; }
+
+  w.document.write(`<!doctype html><html><head>
+    <meta charset="utf-8">
+    <title>History — ${esc(s.name)}</title>
+    <style>
+      * { box-sizing: border-box; }
+      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; color: #111; max-width: 800px; margin: 24px auto; padding: 0 16px; font-size: 13px; line-height: 1.45; }
+      h1 { font-size: 22px; margin: 0 0 4px; }
+      h2 { font-size: 15px; margin: 22px 0 8px; border-bottom: 1px solid #ccc; padding-bottom: 4px; }
+      .meta { color: #555; margin-bottom: 14px; }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; }
+      .row { margin: 4px 0; }
+      .label { color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: .3px; }
+      table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+      th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #e5e5e5; font-size: 12px; }
+      th { color: #666; font-weight: 600; font-size: 11px; text-transform: uppercase; }
+      .photo { max-width: 180px; max-height: 180px; border-radius: 8px; object-fit: cover; float: right; margin: 0 0 12px 16px; }
+      .footer { margin-top: 28px; font-size: 11px; color: #888; border-top: 1px solid #ddd; padding-top: 10px; }
+      @media print {
+        body { margin: 0; }
+        .no-print { display: none; }
+      }
+    </style>
+  </head><body>
+    <button class="no-print" onclick="window.print()" style="padding:10px 16px;font-weight:700;margin-bottom:16px;border-radius:8px;border:0;background:#22c55e;color:#042f14;cursor:pointer">Print / Save as PDF</button>
+    
+    ${photo ? `<img class="photo" src="${photo}">` : ''}
+    <h1>${esc(s.name)}</h1>
+    <div class="meta">${esc(s.sex || '—')} · ${esc(s.status || 'Holdback')}${s.location ? ' · ' + esc(s.location) : ''}</div>
+
+    <h2>Identity</h2>
+    <div class="grid">
+      <div class="row"><div class="label">Genes / Morph</div>${esc(s.genes || 'Not recorded')}</div>
+      <div class="row"><div class="label">Het / Possible Het</div>${esc(s.hets || 'None')}</div>
+      <div class="row"><div class="label">Current weight</div>${s.weight ? esc(s.weight) + ' g' : 'Not recorded'}</div>
+      <div class="row"><div class="label">Date of birth</div>${esc(s.dob || 'Not recorded')}</div>
+      <div class="row"><div class="label">Sire</div>${esc(sire?.name || 'Unknown')}</div>
+      <div class="row"><div class="label">Dam</div>${esc(dam?.name || 'Unknown')}</div>
+    </div>
+    ${s.notes ? `<div class="row" style="margin-top:10px"><div class="label">Notes</div>${esc(s.notes)}</div>` : ''}
+
+    ${kids.length ? `
+      <h2>Offspring (${kids.length})</h2>
+      <table><tr><th>Name</th><th>Sex</th><th>Genes</th></tr>
+      ${kids.map(k => `<tr><td>${esc(k.name)}</td><td>${esc(k.sex||'')}</td><td>${esc(k.genes||'')}</td></tr>`).join('')}
+      </table>` : ''}
+
+    ${weights.length ? `
+      <h2>Weight history (${weights.length})</h2>
+      <table><tr><th>Date</th><th>Weight</th><th>Notes</th></tr>
+      ${weights.map(r => `<tr><td>${r.date}</td><td>${esc(r.value)} g</td><td>${esc(r.result || r.notes || '')}</td></tr>`).join('')}
+      </table>` : ''}
+
+    ${feeds.length ? `
+      <h2>Feeding history (${feeds.length})</h2>
+      <table><tr><th>Date</th><th>Prey / Value</th><th>Result</th><th>Notes</th></tr>
+      ${feeds.map(r => `<tr><td>${r.date}</td><td>${esc(r.value||'')}</td><td>${esc(r.result||'')}</td><td>${esc(r.notes||'')}</td></tr>`).join('')}
+      </table>` : ''}
+
+    ${sheds.length ? `
+      <h2>Shed history (${sheds.length})</h2>
+      <table><tr><th>Date</th><th>Details</th><th>Notes</th></tr>
+      ${sheds.map(r => `<tr><td>${r.date}</td><td>${esc(r.value || r.result || '')}</td><td>${esc(r.notes||'')}</td></tr>`).join('')}
+      </table>` : ''}
+
+    ${health.length ? `
+      <h2>Health records (${health.length})</h2>
+      <table><tr><th>Date</th><th>Details</th><th>Notes</th></tr>
+      ${health.map(r => `<tr><td>${r.date}</td><td>${esc(r.value || r.result || '')}</td><td>${esc(r.notes||'')}</td></tr>`).join('')}
+      </table>` : ''}
+
+    ${!records.length ? '<p style="color:#666">No care records logged yet.</p>' : ''}
+
+    <div class="footer">
+      Naga Exotics · Printed ${new Date().toLocaleString()} · ID: ${esc(s.id)}
+    </div>
+    <script>setTimeout(() => window.print(), 400);<\/script>
+  </body></html>`);
+  w.document.close();
+}
+
+function showQR(id) {
+  const s = db.snakes.find(x => x.id === id);
+  if (!s) return;
+  const text = `Naga|${s.name}|${s.sex||''}|${s.genes||''}|${s.location||''}|${s.id}`;
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  overlay.innerHTML = `
+    <div class="sheet" style="text-align:center">
+      <h2>QR Label</h2>
+      <p class="muted">${esc(s.name)}</p>
+      <canvas id="qrcanvas" style="margin:12px auto;background:#fff;border-radius:12px;max-width:100%"></canvas>
+      <p class="muted" style="font-size:12px;margin-top:8px">Scan or screenshot for tub labels.<br>Contains name, genes, location & ID.</p>
+      <div class="actions" style="margin-top:14px">
+        <button class="ghost" onclick="this.closest('.overlay').remove()">Close</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  setTimeout(() => drawQR('qrcanvas', text), 50);
+}
+
+// Minimal QR Code generator (byte mode, ECC level L, version auto small)
+function drawQR(canvasId, text) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  // Use a simple fallback: render text as a scannable-style block using external-free method
+  // For reliable offline QR we embed a compact implementation
+  try {
+    const qr = qrcode(0, 'L');
+    qr.addData(text);
+    qr.make();
+    const size = 6;
+    const count = qr.getModuleCount();
+    canvas.width = count * size;
+    canvas.height = count * size;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#000';
+    for (let r = 0; r < count; r++) {
+      for (let c = 0; c < count; c++) {
+        if (qr.isDark(r, c)) ctx.fillRect(c * size, r * size, size, size);
+      }
+    }
+  } catch (e) {
+    // Fallback visual if library fails
+    canvas.width = 200; canvas.height = 200;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0,0,200,200);
+    ctx.fillStyle = '#000'; ctx.font = '12px monospace';
+    ctx.fillText(text.slice(0, 30), 10, 100);
+  }
+}
+
+function deleteAnimal(id) {
+  const s = db.snakes.find(x => x.id === id);
+  if (!confirm(`Delete ${s.name}? Care records for this snake will also be removed.`)) return;
+  db.snakes = db.snakes.filter(x => x.id !== id);
+  db.care = db.care.filter(x => x.snakeId !== id);
+  db.pairings = db.pairings.filter(p => p.maleId !== id && p.femaleId !== id);
+  save();
+  show('animals');
+}
+
+// ---------- CARE ----------
+function setupCareSelect() {
+  $('csnake').innerHTML = '<option value="">Select snake</option>' +
+    db.snakes.map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join('');
+}
+
+function logCare(type) {
+  setupCareSelect();
+  $('cf').reset();
+  $('cid').value = '';
+  $('ctype').value = type;
+  $('cdate').value = today();
+  const titles = { feed: 'Log Feeding', weight: 'Log Weight', shed: 'Log Shed', health: 'Log Health' };
+  $('cfTitle').textContent = titles[type] || 'Log Care';
+  const placeholders = {
+    feed: 'Prey size / type (e.g. rat 40g)',
+    weight: 'Weight in grams',
+    shed: 'Complete / stuck / etc.',
+    health: 'Issue or note'
+  };
+  $('cvalueLabel').textContent = type === 'weight' ? 'Weight (g)' : 'Value / Prey';
+  $('cvalue').placeholder = placeholders[type] || '';
+  show('careForm');
+}
+
+function setCareSnake(id) {
+  setupCareSelect();
+  $('csnake').value = id;
+}
+
+$('cf').onsubmit = e => {
+  e.preventDefault();
+  const snakeId = $('csnake').value;
+  if (!snakeId) { alert('Select a snake'); return; }
+  db.care.unshift({
+    id: $('cid').value || crypto.randomUUID(),
+    snakeId,
+    type: $('ctype').value,
+    date: $('cdate').value,
+    value: $('cvalue').value,
+    result: $('cresult').value,
+    notes: $('cnotes').value
+  });
+  if ($('ctype').value === 'weight') {
+    const s = db.snakes.find(x => x.id === snakeId);
+    const w = parseFloat($('cvalue').value);
+    if (s && !isNaN(w)) s.weight = w;
+  }
+  save();
+  show('care');
+};
+
+function renderCare() {
+  const rows = [...db.care].sort((a,b) => b.date.localeCompare(a.date)).slice(0, 100);
+  $('careTable').innerHTML = rows.length ? `
+    <div class="table"><table>
+      <tr><th>Date</th><th>Snake</th><th>Type</th><th>Value</th><th>Result</th></tr>
+      ${rows.map(r => {
+        const s = db.snakes.find(x => x.id === r.snakeId);
+        return `<tr>
+          <td>${r.date}</td>
+          <td>${esc(s?.name || 'Deleted')}</td>
+          <td>${esc(r.type)}</td>
+          <td>${esc(r.value || '')}</td>
+          <td>${esc(r.result || '')}</td>
+        </tr>`;
+      }).join('')}
+    </table></div>` : '<div class="empty"><div class="muted">No care records yet.</div></div>';
+}
+
+// ---------- BREEDING ----------
+function setupBreeding() {
+  $('bp1').innerHTML = '<option value="">Select male</option>' +
+    db.snakes.filter(s => s.sex === 'Male').map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join('');
+  $('bp2').innerHTML = '<option value="">Select female</option>' +
+    db.snakes.filter(s => s.sex === 'Female').map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join('');
+  renderPairings();
+}
+
+// ---------- ACCURATE GENETICS ENGINE ----------
+// Inheritance modes for common ball python morphs
+const GENE_DB = {
+  // Recessive
+  'clown': 'rec', 'pied': 'rec', 'piebald': 'rec', 'albino': 'rec', 'axanthic': 'rec',
+  'caramel': 'rec', 'lavender': 'rec', 'genetic stripe': 'rec', 'stripe': 'rec',
+  'desert ghost': 'rec', 'bamboo': 'rec', 'specter': 'rec', 'cinnamon': 'rec',
+  'black pastel': 'rec', 'ultramel': 'rec', 'hypo': 'rec', 'ghost': 'rec',
+  'genetic ball': 'rec', 'sugar': 'rec', 'toxin': 'rec', 'acid': 'rec',
+  'crypto': 'rec', 'cryptic': 'rec', 'freeway': 'rec', 'gravel': 'rec',
+  'hidden gene woma': 'rec', 'hgw': 'rec', 'orange ghost': 'rec',
+  // Incomplete dominant / codominant (visual with 1 copy, super with 2)
+  'pastel': 'inc', 'mojave': 'inc', 'lesser': 'inc', 'butter': 'inc', 'phantom': 'inc',
+  'yellow belly': 'inc', 'yb': 'inc', 'orange dream': 'inc', 'od': 'inc',
+  'enigma': 'inc', 'fire': 'inc', 'vanilla': 'inc', 'ghi': 'inc', 'special': 'inc',
+  'banana': 'inc', 'coral glow': 'inc', 'cg': 'inc', 'pinstripe': 'inc',
+  'woma': 'inc', 'spider': 'dom', 'champagne': 'inc', 'cinnamon pastel': 'inc',
+  'black head': 'inc', 'bh': 'inc', 'highway': 'inc', 'leopard': 'inc',
+  'specter': 'rec', 'super stripe': 'inc',
+  // Dominant-ish / special
+  'spider': 'dom', 'champagne': 'inc'
+};
+
+const ALLELIC = {
+  'mojave': 'Mojave complex (Mojave / Lesser / Butter / Phantom / Russo)',
+  'lesser': 'Mojave complex (Mojave / Lesser / Butter / Phantom / Russo)',
+  'butter': 'Mojave complex (Mojave / Lesser / Butter / Phantom / Russo)',
+  'phantom': 'Mojave complex (Mojave / Lesser / Butter / Phantom / Russo)',
+  'russo': 'Mojave complex (Mojave / Lesser / Butter / Phantom / Russo)',
+  'banana': 'Banana complex — possible issues in supers',
+  'coral glow': 'Often grouped with Banana-related lines',
+  'spider': 'Spider gene — neurological issues common',
+  'woma': 'Woma — check for related issues in some lines',
+  'enigma': 'Enigma — neurological issues possible'
+};
+
+function normalizeGeneName(raw) {
+  return raw.toLowerCase()
+    .replace(/pos(sible)?\s*het/gi, 'poshet')
+    .replace(/\bhet\b/gi, 'het')
+    .replace(/\bsuper\b/gi, 'super')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function parseGeneToken(token) {
+  const t = normalizeGeneName(token);
+  let status = 'visual'; // visual | het | poshet | super
+  let name = t;
+
+  if (t.startsWith('super ')) { status = 'super'; name = t.slice(6); }
+  else if (t.startsWith('poshet ')) { status = 'poshet'; name = t.slice(7); }
+  else if (t.startsWith('pos het ')) { status = 'poshet'; name = t.slice(8); }
+  else if (t.startsWith('het ')) { status = 'het'; name = t.slice(4); }
+  else if (t.includes('poshet') || t.includes('pos het')) {
+    status = 'poshet';
+    name = t.replace(/poshet|pos het/g, '').trim();
+  } else if (/\bhet\b/.test(t) && !t.startsWith('het')) {
+    // e.g. "Clown Het" unusual but handle
+    status = 'het';
+    name = t.replace(/\bhet\b/g, '').trim();
+  }
+
+  name = name.replace(/[^a-z0-9\s\-]/g, '').trim();
+  // Resolve aliases
+  const aliases = { 'yb': 'yellow belly', 'od': 'orange dream', 'cg': 'coral glow', 'bh': 'black head', 'piebald': 'pied', 'hgw': 'hidden gene woma' };
+  if (aliases[name]) name = aliases[name];
+
+  return { name, status, raw: token };
+}
+
+function geneTokens(s) {
+  const text = ((s.genes || '') + ', ' + (s.hets || ''));
+  return text.split(/[,\/+]+|\s{2,}/).map(x => x.trim()).filter(Boolean).map(parseGeneToken);
+}
+
+function geneMode(name) {
+  const n = name.toLowerCase();
+  if (GENE_DB[n]) return GENE_DB[n];
+  // fuzzy
+  for (const [k, v] of Object.entries(GENE_DB)) {
+    if (n.includes(k) || k.includes(n)) return v;
+  }
+  return 'unknown';
+}
+
+function dosage(parsedList, geneName) {
+  // Returns 0, 1, or 2 (approx) for how many copies this animal is treated as having
+  const matches = parsedList.filter(p => p.name === geneName || p.name.includes(geneName) || geneName.includes(p.name));
+  if (!matches.length) return 0;
+  // Prefer strongest status
+  if (matches.some(m => m.status === 'super')) return 2;
+  if (matches.some(m => m.status === 'visual')) return 1;
+  if (matches.some(m => m.status === 'het')) return 1; // het = carrier, 1 recessive allele
+  if (matches.some(m => m.status === 'poshet')) return 0.5; // uncertain
+  return 0;
+}
+
+function oddsForGene(mode, doseM, doseF) {
+  // Returns { visual: %, het: %, super: %, note: string }
+  const dm = doseM >= 2 ? 2 : doseM >= 1 ? 1 : doseM > 0 ? 0.5 : 0;
+  const df = doseF >= 2 ? 2 : doseF >= 1 ? 1 : doseF > 0 ? 0.5 : 0;
+
+  if (mode === 'rec') {
+    // Recessive: visual only if both alleles present
+    if (dm === 2 && df === 2) return { visual: 100, het: 0, super: 0, note: 'Both visual → 100% visual' };
+    if (dm === 2 && df === 1) return { visual: 50, het: 50, super: 0, note: 'Visual × Het → 50% visual, 50% het' };
+    if (dm === 1 && df === 2) return { visual: 50, het: 50, super: 0, note: 'Het × Visual → 50% visual, 50% het' };
+    if (dm === 1 && df === 1) return { visual: 25, het: 50, super: 0, note: 'Het × Het → 25% visual, 50% het, 25% clean' };
+    if ((dm === 2 && df === 0) || (dm === 0 && df === 2)) return { visual: 0, het: 100, super: 0, note: 'Visual × clean → 100% het' };
+    if ((dm === 1 && df === 0) || (dm === 0 && df === 1)) return { visual: 0, het: 50, super: 0, note: 'Het × clean → 50% het, 50% clean' };
+    if (dm === 0.5 || df === 0.5) return { visual: null, het: null, super: 0, note: 'Possible het involved — odds uncertain (treat as 50–66% het range if proven lines)' };
+    return { visual: 0, het: 0, super: 0, note: 'No contribution expected' };
+  }
+
+  if (mode === 'inc' || mode === 'dom') {
+    // Incomplete / codominant / dominant: 1 copy = visual, 2 = super
+    if (dm === 2 && df === 2) return { visual: 0, het: 0, super: 100, note: 'Super × Super → 100% super' };
+    if ((dm === 2 && df === 1) || (dm === 1 && df === 2)) return { visual: 50, het: 0, super: 50, note: 'Super × Visual → 50% super, 50% visual' };
+    if (dm === 1 && df === 1) return { visual: 50, het: 0, super: 25, note: 'Visual × Visual → 25% super, 50% visual, 25% clean' };
+    if ((dm === 2 && df === 0) || (dm === 0 && df === 2)) return { visual: 100, het: 0, super: 0, note: 'Super × clean → 100% visual' };
+    if ((dm === 1 && df === 0) || (dm === 0 && df === 1)) return { visual: 50, het: 0, super: 0, note: 'Visual × clean → 50% visual, 50% clean' };
+    if (dm === 0.5 || df === 0.5) return { visual: null, het: null, super: null, note: 'Uncertain dosage — verify parent genetics' };
+    return { visual: 0, het: 0, super: 0, note: 'No contribution expected' };
+  }
+
+  return { visual: null, het: null, super: null, note: 'Unknown inheritance — verify manually' };
+}
+
+function calculateBreeding() {
+  const m = db.snakes.find(s => s.id === $('bp1').value);
+  const f = db.snakes.find(s => s.id === $('bp2').value);
+  if (!m || !f) {
+    $('bresult').innerHTML = '<div class="notice">Select both a male and a female.</div>';
+    return;
+  }
+
+  const mGenes = geneTokens(m);
+  const fGenes = geneTokens(f);
+  const allNames = [...new Set([...mGenes, ...fGenes].map(g => g.name).filter(Boolean))];
+
+  let rows = '';
+  let warnings = [];
+  let comboNotes = [];
+
+  allNames.forEach(name => {
+    const mode = geneMode(name);
+    const doseM = dosage(mGenes, name);
+    const doseF = dosage(fGenes, name);
+    if (doseM === 0 && doseF === 0) return;
+
+    const odds = oddsForGene(mode, doseM, doseF);
+    const modeLabel = mode === 'rec' ? 'Recessive' : mode === 'inc' ? 'Inc. dominant' : mode === 'dom' ? 'Dominant' : 'Unknown';
+
+    const fmt = (v) => v == null ? '—' : (v + '%');
+    rows += `<tr>
+      <td><b>${esc(name)}</b><div class="muted" style="font-size:11px">${modeLabel}</div></td>
+      <td style="font-size:12px">${doseM === 2 ? 'Super' : doseM === 1 ? (mode==='rec' ? 'Het/Vis' : 'Visual') : doseM === 0.5 ? 'Pos Het' : '—'}</td>
+      <td style="font-size:12px">${doseF === 2 ? 'Super' : doseF === 1 ? (mode==='rec' ? 'Het/Vis' : 'Visual') : doseF === 0.5 ? 'Pos Het' : '—'}</td>
+      <td style="font-size:12px">
+        Vis ${fmt(odds.visual)} · Het ${fmt(odds.het)} · Super ${fmt(odds.super)}
+        <div class="muted">${esc(odds.note)}</div>
+      </td>
+    </tr>`;
+
+    if (ALLELIC[name]) warnings.push(ALLELIC[name]);
+  });
+
+  // Simple combination hint
+  const visualGenes = allNames.filter(n => {
+    const mode = geneMode(n);
+    return (dosage(mGenes, n) > 0 || dosage(fGenes, n) > 0) && mode !== 'unknown';
+  });
+  if (visualGenes.length >= 2) {
+    comboNotes.push('Multiple genes present — offspring can stack combinations (e.g. Pastel Pied, Mojave Clown). Percentages above are per-gene; actual combo rates multiply.');
+  }
+
+  $('bresult').innerHTML = `
+    <div class="card" style="margin-top:12px">
+      <h3>${esc(m.name)} × ${esc(f.name)}</h3>
+      <div class="table" style="margin-top:10px">
+        <table>
+          <tr><th>Gene</th><th>Male</th><th>Female</th><th>Expected odds</th></tr>
+          ${rows || '<tr><td colspan="4">No recognizable genes on either parent</td></tr>'}
+        </table>
+      </div>
+      ${warnings.length ? `<div class="notice warn" style="margin-top:12px"><b>Complex / caution genes</b><br>${[...new Set(warnings)].map(w => '• ' + esc(w)).join('<br>')}</div>` : ''}
+      ${comboNotes.length ? `<div class="notice" style="margin-top:8px">${comboNotes.map(esc).join('<br>')}</div>` : ''}
+      <div class="notice ok" style="margin-top:8px">
+        Odds assume standard Mendelian inheritance and correct Visual/Het/Super labels on the parents.
+        Always double-check rare or allelic genes with a trusted reference.
+      </div>
+    </div>`;
+}
+
+function savePairing() {
+  const maleId = $('bp1').value, femaleId = $('bp2').value;
+  if (!maleId || !femaleId) { alert('Choose both parents'); return; }
+  db.pairings.unshift({
+    id: crypto.randomUUID(),
+    maleId, femaleId,
+    date: today(),
+    notes: $('bnotes').value,
+    status: 'Planned'
+  });
+  save();
+  renderPairings();
+  alert('Pairing saved');
+}
+
+function setPairingStatus(id, status) {
+  const p = db.pairings.find(x => x.id === id);
+  if (p) { p.status = status; save(); renderPairings(); }
+}
+
+function renderPairings() {
+  const statuses = ['Planned','Locked','Gravid','Laid','Hatched'];
+  $('pairings').innerHTML = db.pairings.length ? db.pairings.map(p => {
+    const m = db.snakes.find(s => s.id === p.maleId);
+    const f = db.snakes.find(s => s.id === p.femaleId);
+    const st = p.status || 'Planned';
+    return `<div class="card" style="margin-bottom:8px">
+      <div class="section-title">
+        <b>${esc(m?.name || 'Deleted')} × ${esc(f?.name || 'Deleted')}</b>
+        <span class="badge ${st==='Hatched'?'ok':st==='Gravid'||st==='Laid'?'warn':''}">${esc(st)}</span>
+      </div>
+      <div class="muted">${p.date}${p.notes ? ' · ' + esc(p.notes) : ''}</div>
+      <div class="chip-row" style="margin-top:8px">
+        ${statuses.map(s => `<button class="chip ${st===s?'active':''}" onclick="setPairingStatus('${p.id}','${s}')">${s}</button>`).join('')}
+      </div>
+      <button class="small" style="margin-top:8px" onclick="newClutchForPair('${p.id}')">🥚 Add clutch</button>
+    </div>`;
+  }).join('') : '<div class="muted">No saved pairings yet.</div>';
+}
+
+// ---------- CLUTCHES ----------
+function setupClutchPairs() {
+  $('clpair').innerHTML = '<option value="">Choose pairing</option>' +
+    db.pairings.map(p => {
+      const m = db.snakes.find(s => s.id === p.maleId);
+      const f = db.snakes.find(s => s.id === p.femaleId);
+      return `<option value="${p.id}">${esc(m?.name || '?')} × ${esc(f?.name || '?')}</option>`;
+    }).join('');
+}
+
+function newClutch() {
+  setupClutchPairs();
+  $('clf').reset();
+  $('clid').value = '';
+  $('cldate').value = today();
+  $('cleggs').value = 1;
+  $('cltemp').value = 31.5;
+  $('clTitle').textContent = 'Add Clutch';
+  show('clutchForm');
+}
+
+function newClutchForPair(pid) {
+  newClutch();
+  $('clpair').value = pid;
+}
+
+$('clf').onsubmit = e => {
+  e.preventDefault();
+  const id = $('clid').value || crypto.randomUUID();
+  const c = {
+    id,
+    pairingId: $('clpair').value,
+    date: $('cldate').value,
+    eggs: parseInt($('cleggs').value || 0),
+    temp: $('cltemp').value,
+    hatchDate: $('clhatch').value,
+    notes: $('clnotes').value,
+    name: 'Clutch ' + ($('cldate').value || '')
+  };
+  const i = db.clutches.findIndex(x => x.id === id);
+  if (i >= 0) db.clutches[i] = c;
+  else db.clutches.unshift(c);
+  save();
+  show('clutches');
+};
+
+function renderClutches() {
+  $('clutchList').innerHTML = db.clutches.length ? db.clutches.map(c => {
+    const p = db.pairings.find(x => x.id === c.pairingId);
+    const m = db.snakes.find(s => s.id === p?.maleId);
+    const f = db.snakes.find(s => s.id === p?.femaleId);
+    let progress = '';
+    if (c.hatchDate && c.date) {
+      const total = daysBetween(c.date, c.hatchDate) || 55;
+      const done = Math.min(100, Math.max(0, (daysBetween(c.date, today()) / total) * 100));
+      progress = `<div class="progress"><i style="width:${done}%"></i></div>`;
+    }
+    const days = c.hatchDate ? daysBetween(today(), c.hatchDate) : null;
+    const dayLabel = days === null ? '' : days < 0 ? `<span class="badge danger">${Math.abs(days)}d overdue</span>` :
+      days === 0 ? `<span class="badge ok">Hatching today</span>` : `<span class="badge">${days}d left</span>`;
+
+    return `<div class="card" style="margin-bottom:10px" onclick="clutchDetail('${c.id}')">
+      <div class="section-title">
+        <h3 style="margin:0">🥚 ${esc(c.name)}</h3>
+        ${dayLabel}
+      </div>
+      <div class="muted">${esc(m?.name || 'Unknown')} × ${esc(f?.name || 'Unknown')}</div>
+      <div style="margin-top:6px">${c.eggs} eggs · Laid ${c.date} ${c.temp ? '· ' + c.temp + '°C' : ''}</div>
+      ${progress}
+    </div>`;
+  }).join('') : '<div class="empty"><div class="big">🥚</div><h3>No clutches yet</h3></div>';
+}
+
+function clutchDetail(id) {
+  const c = db.clutches.find(x => x.id === id);
+  if (!c) return;
+  const p = db.pairings.find(x => x.id === c.pairingId);
+  const m = db.snakes.find(s => s.id === p?.maleId);
+  const f = db.snakes.find(s => s.id === p?.femaleId);
+  const days = c.hatchDate ? daysBetween(today(), c.hatchDate) : null;
+  const alreadyHatched = c.hatched || false;
+
+  $('clutchBody').innerHTML = `
+    <h2>🥚 ${esc(c.name)}</h2>
+    <div class="card">
+      <div class="line"><b>Parents</b>${esc(m?.name || 'Unknown')} × ${esc(f?.name || 'Unknown')}</div>
+      <div class="line"><b>Lay date</b>${c.date}</div>
+      <div class="line"><b>Eggs</b>${c.eggs}</div>
+      <div class="line"><b>Incubation</b>${c.temp || '—'}°C</div>
+      <div class="line"><b>Expected hatch</b>${c.hatchDate || 'Not set'}
+        ${days !== null ? `<div class="countdown" style="margin-top:6px">${days < 0 ? Math.abs(days) + ' days overdue' : days + ' days remaining'}</div>` : ''}
+      </div>
+      <div class="line"><b>Notes</b>${esc(c.notes || 'None')}</div>
+      ${alreadyHatched ? '<div class="notice ok">✓ Hatchlings have been created from this clutch.</div>' : ''}
+    </div>
+    <div class="actions">
+      ${!alreadyHatched ? `<button class="primary" onclick="hatchClutch('${id}')">🐍 Hatch & Create Babies</button>` : ''}
+      <button onclick="editClutch('${id}')">Edit</button>
+      <button class="danger" onclick="deleteClutch('${id}')">Delete</button>
+    </div>`;
+  show('clutchDetail');
+}
+
+function hatchClutch(id) {
+  const c = db.clutches.find(x => x.id === id);
+  if (!c) return;
+  const count = parseInt(prompt('How many hatchlings to create?', c.eggs || 1), 10);
+  if (!count || count < 1) return;
+  if (!confirm(`Create ${count} hatchling records linked to the parents?`)) return;
+
+  const p = db.pairings.find(x => x.id === c.pairingId);
+  const m = db.snakes.find(s => s.id === p?.maleId);
+  const f = db.snakes.find(s => s.id === p?.femaleId);
+
+  const geneParts = [];
+  if (m?.genes) geneParts.push(m.genes);
+  if (f?.genes) geneParts.push(f.genes);
+  const hetParts = [];
+  if (m?.hets) hetParts.push(m.hets);
+  if (f?.hets) hetParts.push(f.hets);
+
+  for (let i = 1; i <= count; i++) {
+    const name = `${(m?.name || 'Sire').split(' ')[0]} x ${(f?.name || 'Dam').split(' ')[0]} #${i}`;
+    db.snakes.unshift({
+      id: crypto.randomUUID(),
+      name,
+      sex: 'Unknown',
+      genes: geneParts.join(' / ') || '',
+      hets: hetParts.join(', ') || 'Check genetics',
+      status: 'Holdback',
+      weight: '',
+      dob: c.hatchDate || today(),
+      location: '',
+      sire: p?.maleId || '',
+      dam: p?.femaleId || '',
+      notes: `Hatchling from ${c.name}. Verify morphs visually and update genes.`,
+      photo: '',
+      created: today()
+    });
+  }
+
+  c.hatched = true;
+  if (p) p.status = 'Hatched';
+  save();
+  alert(`${count} hatchlings created. Update their genes and sex as you identify them.`);
+  show('animals');
+}
+
+function editClutch(id) {
+  const c = db.clutches.find(x => x.id === id);
+  if (!c) return;
+  newClutch();
+  $('clid').value = c.id;
+  $('clpair').value = c.pairingId;
+  $('cldate').value = c.date;
+  $('cleggs').value = c.eggs;
+  $('cltemp').value = c.temp;
+  $('clhatch').value = c.hatchDate || '';
+  $('clnotes').value = c.notes || '';
+  $('clTitle').textContent = 'Edit Clutch';
+}
+
+function deleteClutch(id) {
+  if (!confirm('Delete this clutch?')) return;
+  db.clutches = db.clutches.filter(c => c.id !== id);
+  save();
+  show('clutches');
+}
+
+// ---------- LINEAGE ----------
+function setupLineage() {
+  $('linSnake').innerHTML = '<option value="">Select snake</option>' +
+    db.snakes.map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join('');
+}
+
+function renderLineage() {
+  const s = db.snakes.find(x => x.id === $('linSnake').value);
+  if (!s) { $('linBody').innerHTML = ''; return; }
+
+  const sire = db.snakes.find(x => x.id === s.sire);
+  const dam = db.snakes.find(x => x.id === s.dam);
+  const gsire = sire ? db.snakes.find(x => x.id === sire.sire) : null;
+  const gdam1 = sire ? db.snakes.find(x => x.id === sire.dam) : null;
+  const gsire2 = dam ? db.snakes.find(x => x.id === dam.sire) : null;
+  const gdam2 = dam ? db.snakes.find(x => x.id === dam.dam) : null;
+  const kids = db.snakes.filter(x => x.sire === s.id || x.dam === s.id);
+  const grandkids = kids.flatMap(k => db.snakes.filter(x => x.sire === k.id || x.dam === k.id));
+
+  function person(label, animal) {
+    if (!animal) return `<div class="line"><b>${label}</b><span class="muted">Unknown</span></div>`;
+    return `<div class="line"><b>${label}</b>
+      <a href="#" onclick="event.preventDefault();$('linSnake').value='${animal.id}';renderLineage();" style="color:var(--accent)">${esc(animal.name)}</a>
+      <div class="muted" style="font-size:12px">${esc(animal.genes || '')}</div>
+    </div>`;
+  }
+
+  $('linBody').innerHTML = `
+    <div class="card">
+      <h3>${esc(s.name)}</h3>
+      <div class="muted" style="margin-bottom:12px">${esc(s.genes || 'No genes')} ${s.hets ? '· ' + esc(s.hets) : ''}</div>
+
+      <h3 style="margin-top:8px">Parents</h3>
+      <div class="two">
+        ${person('Sire', sire)}
+        ${person('Dam', dam)}
+      </div>
+
+      <h3 style="margin-top:16px">Grandparents</h3>
+      <div class="two">
+        ${person('Sire’s Sire', gsire)}
+        ${person('Sire’s Dam', gdam1)}
+      </div>
+      <div class="two">
+        ${person('Dam’s Sire', gsire2)}
+        ${person('Dam’s Dam', gdam2)}
+      </div>
+
+      <h3 style="margin-top:16px">Offspring (${kids.length})</h3>
+      ${kids.length ? kids.map(k => `
+        <div class="line">
+          <a href="#" onclick="event.preventDefault();$('linSnake').value='${k.id}';renderLineage();" style="color:var(--accent)">${esc(k.name)}</a>
+          · ${esc(k.genes || '—')} · ${k.sex || ''}
+        </div>`).join('') : '<div class="muted">No offspring linked yet.</div>'}
+
+      ${grandkids.length ? `
+        <h3 style="margin-top:16px">Grand-offspring (${grandkids.length})</h3>
+        ${grandkids.slice(0, 20).map(k => `
+          <div class="line">
+            <a href="#" onclick="event.preventDefault();$('linSnake').value='${k.id}';renderLineage();" style="color:var(--accent)">${esc(k.name)}</a>
+            · ${esc(k.genes || '—')}
+          </div>`).join('')}
+        ${grandkids.length > 20 ? `<div class="muted">+ ${grandkids.length - 20} more</div>` : ''}
+      ` : ''}
+    </div>`;
+}
+
+// ---------- BULK WEIGHT & FEED ----------
+function bulkWeight() {
+  const lines = db.snakes.map(s => `
+    <div style="display:flex;gap:10px;align-items:center;margin:8px 0">
+      <span style="flex:1;font-size:14px">${esc(s.name)}</span>
+      <input data-bw="${s.id}" type="number" placeholder="${s.weight || 'g'}" style="width:100px">
+    </div>`).join('');
+
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  overlay.innerHTML = `
+    <div class="sheet">
+      <h2>Bulk Weights</h2>
+      <p class="muted">Enter new weights. Empty fields are skipped.</p>
+      ${lines}
+      <div class="actions" style="margin-top:16px">
+        <button class="ghost" onclick="this.closest('.overlay').remove()">Cancel</button>
+        <button class="primary" onclick="saveBulk(this)">Save Weights</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+
+function bulkFeed() {
+  const lines = db.snakes.map(s => {
+    const last = lastCare(s.id, 'feed');
+    return `
+    <div style="display:flex;gap:10px;align-items:center;margin:8px 0;flex-wrap:wrap">
+      <span style="flex:1;min-width:120px;font-size:14px">${esc(s.name)}</span>
+      <span class="muted" style="font-size:11px;width:90px">${last ? 'Last: ' + last.date : 'Never'}</span>
+      <input data-bf="${s.id}" placeholder="prey / size" style="width:110px">
+      <label class="check" style="margin:0"><input type="checkbox" data-bfate="${s.id}" checked> Ate</label>
+    </div>`;
+  }).join('');
+
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  overlay.innerHTML = `
+    <div class="sheet">
+      <h2>Bulk Feeding</h2>
+      <p class="muted">Enter prey for snakes you fed. Leave blank to skip.</p>
+      <div style="margin-bottom:10px">
+        <label>Date</label>
+        <input id="bfdate" type="date" value="${today()}">
+      </div>
+      ${lines}
+      <div class="actions" style="margin-top:16px">
+        <button class="ghost" onclick="this.closest('.overlay').remove()">Cancel</button>
+        <button class="primary" onclick="saveBulkFeed(this)">Save Feedings</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+
+function saveBulkFeed(btn) {
+  const date = document.getElementById('bfdate')?.value || today();
+  let count = 0;
+  document.querySelectorAll('[data-bf]').forEach(i => {
+    if (i.value) {
+      const id = i.dataset.bf;
+      const ate = document.querySelector(`[data-bfate="${id}"]`)?.checked;
+      db.care.unshift({
+        id: crypto.randomUUID(),
+        snakeId: id,
+        type: 'feed',
+        date,
+        value: i.value,
+        result: ate ? 'Ate' : 'Refused',
+        notes: 'Bulk feed'
+      });
+      count++;
+    }
+  });
+  save();
+  btn.closest('.overlay').remove();
+  alert(count ? `${count} feeding(s) saved` : 'Nothing to save');
+  if (document.getElementById('animals')?.classList.contains('active')) renderAnimals();
+}
+
+function saveBulk(btn) {
+  document.querySelectorAll('[data-bw]').forEach(i => {
+    if (i.value) {
+      const s = db.snakes.find(x => x.id === i.dataset.bw);
+      if (s) {
+        s.weight = i.value;
+        db.care.unshift({
+          id: crypto.randomUUID(),
+          snakeId: s.id,
+          type: 'weight',
+          date: today(),
+          value: i.value,
+          result: 'Bulk weight',
+          notes: ''
+        });
+      }
+    }
+  });
+  save();
+  btn.closest('.overlay').remove();
+  renderAnimals();
+  alert('Weights saved');
+}
+
+// ---------- BACKUP ----------
+function exportAll() {
+  const blob = new Blob([JSON.stringify({
+    app: 'Naga Exotics',
+    version: 11,
+    exported: new Date().toISOString(),
+    data: db
+  }, null, 2)], { type: 'application/json' });
+  const u = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = u;
+  a.download = `naga-exotics-backup-${today()}.json`;
+  a.click();
+  URL.revokeObjectURL(u);
+}
+
+$('restore').onchange = e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const x = JSON.parse(r.result);
+      const d = x.data || x;
+      if (!d.snakes) throw new Error('Invalid');
+      db = {
+        snakes: d.snakes || [],
+        care: d.care || [],
+        pairings: d.pairings || [],
+        clutches: d.clutches || [],
+        settings: { version: 11 }
+      };
+      save();
+      alert('Backup restored successfully');
+      show('dashboard');
+    } catch (err) {
+      alert('Invalid backup file');
+    }
+  };
+  r.readAsText(f);
+};
+
+function exportCSV() {
+  const head = ['Name', 'Sex', 'Genes', 'Hets', 'Status', 'Weight_g', 'DOB', 'Location', 'Sire', 'Dam', 'Notes'];
+  const rows = db.snakes.map(s => [
+    s.name, s.sex, s.genes, s.hets, s.status, s.weight, s.dob, s.location,
+    db.snakes.find(x => x.id === s.sire)?.name || '',
+    db.snakes.find(x => x.id === s.dam)?.name || '',
+    s.notes
+  ]);
+  const csv = [head, ...rows].map(r => r.map(v => `"${String(v ?? '').replaceAll('"', '""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const u = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = u;
+  a.download = 'naga-exotics-snakes.csv';
+  a.click();
+  URL.revokeObjectURL(u);
+}
+
+// ---------- Minimal QR Code (Kazuhiko Arase style, compact) ----------
+function qrcode(typeNumber, errorCorrectionLevel) {
+  const PAD0 = 0xEC, PAD1 = 0x11;
+  const QRMode = { MODE_8BIT_BYTE: 1 << 2 };
+  const QRErrorCorrectionLevel = { L: 1, M: 0, Q: 3, H: 2 };
+  const QRMaskPattern = { PATTERN000: 0 };
+  function QRBitBuffer() { this.buffer = []; this.length = 0; }
+  QRBitBuffer.prototype = {
+    get: function(i) { return ((this.buffer[Math.floor(i/8)] >>> (7 - i%8)) & 1) === 1; },
+    put: function(num, length) { for (let i=0;i<length;i++) this.putBit(((num >>> (length-i-1)) & 1) === 1); },
+    putBit: function(bit) {
+      const bufIndex = Math.floor(this.length / 8);
+      if (this.buffer.length <= bufIndex) this.buffer.push(0);
+      if (bit) this.buffer[bufIndex] |= (0x80 >>> (this.length % 8));
+      this.length++;
+    },
+    getLengthInBits: function() { return this.length; }
+  };
+  function QR8bitByte(data) { this.mode = QRMode.MODE_8BIT_BYTE; this.data = data; }
+  QR8bitByte.prototype = {
+    getLength: function() { return this.data.length; },
+    write: function(buffer) { for (let i=0;i<this.data.length;i++) buffer.put(this.data.charCodeAt(i), 8); }
+  };
+  // Simplified: only support typeNumber auto via version 4 (sufficient for short labels)
+  function getBCHTypeInfo(data) {
+    let d = data << 10;
+    while (getBCHDigit(d) - getBCHDigit(0x537) >= 0) d ^= (0x537 << (getBCHDigit(d) - getBCHDigit(0x537)));
+    return ((data << 10) | d) ^ 0x5412;
+  }
+  function getBCHDigit(data) { let digit=0; while (data!==0) { digit++; data>>>=1; } return digit; }
+  function createModules(n) {
+    const m = new Array(n);
+    for (let i=0;i<n;i++) { m[i] = new Array(n); for (let j=0;j<n;j++) m[i][j]=null; }
+    return m;
+  }
+  function setupPositionProbePattern(modules, row, col) {
+    for (let r=-1;r<=7;r++) for (let c=-1;c<=7;c++) {
+      if (row+r<0||modules.length<=row+r||col+c<0||modules.length<=col+c) continue;
+      modules[row+r][col+c] = (0<=r&&r<=6&&(c===0||c===6))||(0<=c&&c<=6&&(r===0||r===6))||(2<=r&&r<=4&&2<=c&&c<=4);
+    }
+  }
+  function setupTimingPattern(modules) {
+    for (let i=8;i<modules.length-8;i++) {
+      if (modules[i][6]==null) modules[i][6] = i%2===0;
+      if (modules[6][i]==null) modules[6][i] = i%2===0;
+    }
+  }
+  function setupTypeInfo(modules, maskPattern, errorCorrectionLevel) {
+    const data = (QRErrorCorrectionLevel[errorCorrectionLevel] << 3) | maskPattern;
+    const bits = getBCHTypeInfo(data);
+    for (let i=0;i<15;i++) {
+      const mod = ((bits >> i) & 1) === 1;
+      if (i < 6) modules[i][8] = mod;
+      else if (i < 8) modules[i+1][8] = mod;
+      else modules[modules.length-15+i][8] = mod;
+      if (i < 8) modules[8][modules.length-i-1] = mod;
+      else if (i < 9) modules[8][15-i-1+1] = mod;
+      else modules[8][15-i-1] = mod;
+    }
+    modules[modules.length-8][8] = true;
+  }
+  function mapData(modules, data, maskPattern) {
+    let inc = -1, row = modules.length-1, bitIndex = 7, byteIndex = 0;
+    for (let col = modules.length-1; col > 0; col -= 2) {
+      if (col === 6) col--;
+      while (true) {
+        for (let c=0;c<2;c++) {
+          if (modules[row][col-c] == null) {
+            let dark = false;
+            if (byteIndex < data.length) dark = (((data[byteIndex] >>> bitIndex) & 1) === 1);
+            const mask = (row + (col-c)) % 2 === 0;
+            if (mask) dark = !dark;
+            modules[row][col-c] = dark;
+            bitIndex--;
+            if (bitIndex === -1) { byteIndex++; bitIndex = 7; }
+          }
+        }
+        row += inc;
+        if (row < 0 || modules.length <= row) { row -= inc; inc = -inc; break; }
+      }
+    }
+  }
+  // Public API
+  const _this = {};
+  let _dataList = [], _modules = null, _moduleCount = 0;
+  _this.addData = function(data) { _dataList.push(new QR8bitByte(data)); };
+  _this.make = function() {
+    // Fixed small version suitable for labels (~50-80 chars)
+    const typeNumber = 4;
+    _moduleCount = typeNumber * 4 + 17;
+    _modules = createModules(_moduleCount);
+    setupPositionProbePattern(_modules, 0, 0);
+    setupPositionProbePattern(_modules, _moduleCount-7, 0);
+    setupPositionProbePattern(_modules, 0, _moduleCount-7);
+    setupTimingPattern(_modules);
+    setupTypeInfo(_modules, 0, errorCorrectionLevel);
+    // Data
+    const buffer = new QRBitBuffer();
+    _dataList.forEach(d => { buffer.put(d.mode, 4); buffer.put(d.getLength(), 8); d.write(buffer); });
+    // Pad
+    const totalDataCount = 80; // approx for v4-L
+    while (buffer.getLengthInBits() + 4 <= totalDataCount * 8) buffer.put(0, 4);
+    while (buffer.getLengthInBits() % 8 !== 0) buffer.putBit(false);
+    while (true) {
+      if (buffer.getLengthInBits() >= totalDataCount * 8) break;
+      buffer.put(PAD0, 8);
+      if (buffer.getLengthInBits() >= totalDataCount * 8) break;
+      buffer.put(PAD1, 8);
+    }
+    mapData(_modules, buffer.buffer, 0);
+  };
+  _this.getModuleCount = function() { return _moduleCount; };
+  _this.isDark = function(row, col) { return _modules[row][col]; };
+  return _this;
+}
+
+// Init — wait for storage to load first
+_ready.then(() => {
+  show('dashboard');
+}).catch(() => {
+  show('dashboard');
+});
+</script>
+</body>
+</html>
