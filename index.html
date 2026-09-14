@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-<title>Naga Exotics — Breeder Pro V11</title>
+<title>Naga Exotics — Breeder Pro V17</title>
 <style>
 :root {
   --bg: #050d09;
@@ -311,7 +311,7 @@ textarea { min-height: 96px; resize: vertical; }
   <header class="head">
     <div class="brand-row">
       <div>
-        <div class="brand">🐍 <span>Naga</span> Exotics</div>
+        <div class="brand">🐍 <span>Naga</span> Exotics <span style="font-size:13px;font-weight:700;opacity:.85;letter-spacing:0">V17</span></div>
         <div class="sub">Breeder Pro • Offline</div>
       </div>
       <div class="head-actions">
@@ -333,19 +333,19 @@ textarea { min-height: 96px; resize: vertical; }
   <main>
     <!-- DASHBOARD -->
     <section id="dashboard" class="view active">
-      <h2>Dashboard</h2>
+      <h2 data-i18n="dashboard">Dashboard</h2>
       <div class="grid" id="dashStats"></div>
       <div id="dashAlerts" style="margin-top:12px"></div>
       <div class="card" style="margin-top:12px">
-        <div class="section-title"><h3>Upcoming hatches</h3></div>
+        <div class="section-title"><h3 data-i18n="upcoming_hatches">Upcoming hatches</h3></div>
         <div id="dashHatches"></div>
       </div>
       <div class="card">
-        <div class="section-title"><h3>Recent activity</h3></div>
+        <div class="section-title"><h3 data-i18n="recent_activity">Recent activity</h3></div>
         <div id="dashActivity"></div>
       </div>
       <div class="card">
-        <h3>Quick search</h3>
+        <h3 data-i18n="quick_search">Quick search</h3>
         <input class="search" placeholder="Name, gene, het, ID, notes…" oninput="quickSearch(this.value)">
         <div id="quickResults"></div>
       </div>
@@ -354,9 +354,9 @@ textarea { min-height: 96px; resize: vertical; }
     <!-- ANIMALS -->
     <section id="animals" class="view">
       <div class="actions" style="margin-top:0">
-        <button class="primary" onclick="newAnimal()">＋ Add Snake</button>
-        <button onclick="bulkWeight()">⚖️ Bulk Weight</button>
-        <button onclick="bulkFeed()">🍽️ Bulk Feed</button>
+        <button class="primary" onclick="newAnimal()">＋ <span data-i18n="add_snake">Add Snake</span></button>
+        <button onclick="bulkWeight()">⚖️ <span data-i18n="bulk_weight">Bulk Weight</span></button>
+        <button onclick="bulkFeed()">🍽️ <span data-i18n="bulk_feed">Bulk Feed</span></button>
       </div>
       <input id="aq" class="search" placeholder="Search snakes…" oninput="renderAnimals()">
       <div class="filters">
@@ -415,6 +415,10 @@ textarea { min-height: 96px; resize: vertical; }
           <div><label>Date of Birth</label><input id="adob" type="date"></div>
           <div><label>Location</label><input id="alocation" placeholder="Rack A / Tub 4"></div>
         </div>
+        <div class="two">
+          <div><label>Feed every (days)</label><input id="afeedDays" type="number" min="1" placeholder="14" value="14"></div>
+          <div><label>Sale price</label><input id="aprice" placeholder="e.g. 5000 THB"></div>
+        </div>
         <label>Parents</label>
         <div class="two">
           <select id="asire"><option value="">Sire unknown</option></select>
@@ -437,7 +441,7 @@ textarea { min-height: 96px; resize: vertical; }
 
     <!-- CARE -->
     <section id="care" class="view">
-      <h2>Care Log</h2>
+      <h2 data-i18n="care_log">Care Log</h2>
       <div class="quick-actions">
         <button onclick="logCare('feed')"><span class="ico">🍽️</span>Feed</button>
         <button onclick="logCare('weight')"><span class="ico">⚖️</span>Weight</button>
@@ -475,7 +479,7 @@ textarea { min-height: 96px; resize: vertical; }
 
     <!-- BREEDING -->
     <section id="breeding" class="view">
-      <h2>🧬 Breeding Planner</h2>
+      <h2>🧬 <span data-i18n="breeding_planner">Breeding Planner</span></h2>
       <div class="card">
         <div class="two">
           <div>
@@ -503,7 +507,7 @@ textarea { min-height: 96px; resize: vertical; }
 
     <!-- CLUTCHES -->
     <section id="clutches" class="view">
-      <h2>🥚 Clutches</h2>
+      <h2>🥚 <span data-i18n="clutches">Clutches</span></h2>
       <div class="actions" style="margin-top:0">
         <button class="primary" onclick="newClutch()">＋ Add Clutch</button>
       </div>
@@ -540,7 +544,7 @@ textarea { min-height: 96px; resize: vertical; }
 
     <!-- LINEAGE -->
     <section id="lineage" class="view">
-      <h2>🌳 Lineage</h2>
+      <h2>🌳 <span data-i18n="lineage_title">Lineage</span></h2>
       <p class="muted">Select a snake to view parents and offspring.</p>
       <select id="linSnake" onchange="renderLineage()" style="margin-top:8px"></select>
       <div id="linBody" style="margin-top:14px"></div>
@@ -548,10 +552,29 @@ textarea { min-height: 96px; resize: vertical; }
 
     <!-- BACKUP -->
     <section id="backup" class="view">
-      <h2>Backup & Data</h2>
+      <h2 data-i18n="backup_data">Backup & Data</h2>
       <div class="notice ok">
-        <b>V10 genetics upgrade:</b> Data is now saved in IndexedDB (much larger limit on iPhone) and photos are compressed automatically.<br>
-        Still export a backup before clearing Safari data, updating iOS, or switching phones.
+        <b>Storage:</b> Data is saved in IndexedDB (large limit on iPhone) and photos are compressed automatically.<br>
+        Export a backup before clearing Safari data, updating iOS, or switching phones.
+      </div>
+      <div class="card">
+        <h3 data-i18n="lang_title">Language</h3>
+        <p class="muted" data-i18n="lang_help">Choose app language. Genetics terms stay in English.</p>
+        <select id="langSelect" onchange="setLanguage(this.value)">
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+          <option value="pt">Português</option>
+          <option value="id">Bahasa Indonesia</option>
+          <option value="th">ไทย</option>
+        </select>
+      </div>
+      <div class="card">
+        <h3 data-i18n="notif_title">Hatch day notifications</h3>
+        <p class="muted" data-i18n="notif_help1">For a reliable phone alarm, use Add Alarm to Calendar on a clutch (recommended on iPhone).</p>
+        <p class="muted" data-i18n="notif_help2">Optional: allow in-app banners when you open the app on hatch day.</p>
+        <button onclick="enableHatchNotifications()" data-i18n="notif_btn">Enable in-app notifications</button>
       </div>
       <div class="card">
         <h3>Full backup</h3>
@@ -563,12 +586,18 @@ textarea { min-height: 96px; resize: vertical; }
         <input id="restore" type="file" accept=".json,application/json">
       </div>
       <div class="card">
-        <h3>CSV export</h3>
-        <button onclick="exportCSV()">Export Snake List (CSV)</button>
+        <h3>CSV import / export</h3>
+        <p class="muted">Export your list to a spreadsheet, edit it, then import it back. Columns: Name, Sex, Genes, Hets, Status, Weight_g, DOB, Location, Sire, Dam, Notes, FeedDays, Price</p>
+        <div class="actions" style="margin-top:8px">
+          <button onclick="exportCSV()">Export CSV</button>
+          <button class="primary" onclick="document.getElementById('csvImport').click()">Import CSV</button>
+        </div>
+        <input id="csvImport" type="file" accept=".csv,text/csv" style="display:none">
+        <p class="muted" style="margin-top:8px">Import adds new snakes or updates existing ones with the same Name.</p>
       </div>
       <div class="card">
         <h3>Danger zone</h3>
-        <button class="danger" onclick="if(confirm('Delete ALL data? This cannot be undone.')){db={snakes:[],care:[],pairings:[],clutches:[],settings:{version:10}};save();show('dashboard')}">Clear All Data</button>
+        <button class="danger" onclick="if(confirm('Delete ALL data? This cannot be undone.')){db={snakes:[],care:[],pairings:[],clutches:[],settings:{version:17}};save();show('dashboard')}">Clear All Data</button>
       </div>
     </section>
   </main>
@@ -584,11 +613,11 @@ textarea { min-height: 96px; resize: vertical; }
 </div>
 
 <script>
-const K = 'naga_exotics_v11_data';
+const K = 'naga_exotics_v17_data';
 const IDB_NAME = 'NagaExoticsDB';
 const IDB_STORE = 'data';
-const LEGACY = ['naga_exotics_v10_data','naga_exotics_v9_data','naga_exotics_v8_data','naga_exotics_v7_data','naga_exotics_v6_data','naga_exotics_v5_data','naga_exotics_v4','naga_exotics_v2'];
-let db = { snakes: [], care: [], pairings: [], clutches: [], settings: { version: 11 } };
+const LEGACY = ['naga_exotics_v16_data','naga_exotics_v15_data','naga_exotics_v14_data','naga_exotics_v13_data','naga_exotics_v12_data','naga_exotics_v11_data','naga_exotics_v10_data','naga_exotics_v9_data','naga_exotics_v8_data','naga_exotics_v7_data','naga_exotics_v6_data','naga_exotics_v5_data','naga_exotics_v4','naga_exotics_v2'];
+let db = { snakes: [], care: [], pairings: [], clutches: [], settings: { version: 17 } };
 let photoData = '';
 let photoList = [];
 let _idb = null;
@@ -631,14 +660,14 @@ function parseLoaded(raw) {
   if (!raw) return null;
   const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
   if (Array.isArray(parsed)) {
-    return { snakes: parsed, care: [], pairings: [], clutches: [], settings: { version: 11 } };
+    return { snakes: parsed, care: [], pairings: [], clutches: [], settings: { version: 17 } };
   }
   return {
     snakes: parsed.snakes || [],
     care: parsed.care || [],
     pairings: (parsed.pairings || []).map(p => ({ ...p, status: p.status || 'Planned' })),
     clutches: parsed.clutches || [],
-    settings: { version: 11 }
+    settings: { version: 17, lang: parsed.settings?.lang || 'en', featuredId: parsed.settings?.featuredId || '' }
   };
 }
 
@@ -694,7 +723,7 @@ async function doSave() {
       localStorage.setItem(K + '_meta', JSON.stringify({
         count: payload.snakes.length,
         saved: new Date().toISOString(),
-        version: 11
+        version: 17
       }));
     } catch (e) {}
     return;
@@ -767,6 +796,286 @@ function show(v) {
   if (v === 'breeding') setupBreeding();
   if (v === 'clutches') renderClutches();
   if (v === 'lineage') setupLineage();
+  if (typeof applyLanguage === 'function') applyLanguage();
+}
+
+
+// ---------- i18n ----------
+
+const I18N = {
+en: {
+  dashboard:'Dashboard', home:'Home', snakes:'Snakes', care:'Care', breed:'Breed', clutch:'Clutch',
+  backup:'Backup', lineage:'Lineage', add_snake:'Add Snake', bulk_weight:'Bulk Weight', bulk_feed:'Bulk Feed',
+  search_snakes:'Search snakes…', all_sexes:'All sexes', all_statuses:'All statuses', all_genes:'All genes',
+  upcoming_hatches:'Upcoming hatches', recent_activity:'Recent activity', quick_search:'Quick search',
+  care_log:'Care Log', breeding_planner:'Breeding Planner', clutches:'Clutches', lineage_title:'Lineage',
+  backup_data:'Backup & Data', lang_title:'Language', lang_help:'Choose app language. Genetics terms stay in English.',
+  notif_title:'Hatch day notifications', notif_help1:'For a reliable phone alarm, use Add Alarm to Calendar on a clutch (recommended on iPhone).',
+  notif_help2:'Optional: allow in-app banners when you open the app on hatch day.', notif_btn:'Enable in-app notifications',
+  males:'Males', females:'Females', active_clutches:'Active clutches', save:'Save', cancel:'Cancel', edit:'Edit', delete:'Delete',
+  print_history:'Print History', collection_healthy:'Collection looks healthy.', back:'Back',
+  photo:'Photo', choose_photo:'Choose Photo', remove:'Remove', name_id:'Name / ID *', sex:'Sex', unknown:'Unknown',
+  male:'Male', female:'Female', genes_morph:'Genes / Morph', het_possible:'Het / Possible Het', breeding_status:'Breeding Status',
+  weight_g:'Weight (g)', dob:'Date of Birth', location:'Location', parents:'Parents', notes:'Notes',
+  holdback:'Holdback', breeding_male:'Breeding Male', breeding_female:'Breeding Female', proven:'Proven', for_sale:'For Sale', sold:'Sold',
+  sire_unknown:'Sire unknown', dam_unknown:'Dam unknown', save_snake:'Save Snake', add_snake_title:'Add Snake', edit_snake_title:'Edit Snake',
+  feed:'Feed', weight:'Weight', shed:'Shed', health:'Health', log_care:'Log Care', recent_records:'Recent records',
+  date:'Date', value:'Value', result:'Result', select_snake:'Select snake', save_record:'Save Record',
+  male_parent:'Male', female_parent:'Female', pairing_notes:'Pairing notes', calculate_odds:'Calculate Odds', save_pairing:'Save Pairing',
+  saved_pairings:'Saved pairings', add_clutch:'Add Clutch', lay_date:'Lay Date', egg_count:'Egg Count', temp_c:'Temp °C',
+  expected_hatch:'Expected Hatch Date', save_clutch:'Save Clutch', hatch_create:'Hatch & Create Babies',
+  add_alarm:'Add Alarm to Calendar', no_snakes:'No snakes found', no_matches:'No matches', full_backup:'Full backup',
+  restore_backup:'Restore backup', csv_export:'CSV export', danger_zone:'Danger zone', clear_all:'Clear All Data',
+  export_json:'Export JSON Backup', export_csv:'Export Snake List (CSV)', sort_name:'Sort: Name', sort_weight:'Sort: Weight',
+  sort_new:'Sort: Newest', sort_fed:'Sort: Last fed', tap_photo:'Tap to add a photo', feature_print:'Print History',
+  view_snake:'View', eggs:'Eggs', incubation:'Incubation', planned:'Planned', locked:'Locked', gravid:'Gravid', laid:'Laid', hatched:'Hatched'
+},
+th: {
+  dashboard:'แดชบอร์ด', home:'หน้าหลัก', snakes:'งู', care:'การดูแล', breed:'ผสมพันธุ์', clutch:'คลัทช์',
+  backup:'สำรอง', lineage:'สายเลือด', add_snake:'เพิ่มงู', bulk_weight:'ชั่งน้ำหนักหลายตัว', bulk_feed:'ให้อาหารหลายตัว',
+  search_snakes:'ค้นหางู…', all_sexes:'เพศทั้งหมด', all_statuses:'สถานะทั้งหมด', all_genes:'ยีนทั้งหมด',
+  upcoming_hatches:'ใกล้ฟัก', recent_activity:'กิจกรรมล่าสุด', quick_search:'ค้นหาด่วน',
+  care_log:'บันทึกการดูแล', breeding_planner:'วางแผนผสมพันธุ์', clutches:'คลัทช์', lineage_title:'สายเลือด',
+  backup_data:'สำรองข้อมูล', lang_title:'ภาษา', lang_help:'เลือกภาษาของแอป คำศัพท์พันธุกรรมยังเป็นภาษาอังกฤษ',
+  notif_title:'แจ้งเตือนวันฟัก', notif_help1:'สำหรับปลุกที่แน่นอน ให้ใช้เพิ่มในปฏิทินบนคลัทช์ (แนะนำบน iPhone)',
+  notif_help2:'ทางเลือก: แจ้งเตือนเมื่อเปิดแอปในวันฟัก', notif_btn:'เปิดการแจ้งเตือนในแอป',
+  males:'ตัวผู้', females:'ตัวเมีย', active_clutches:'คลัทช์ที่กำลังฟัก', save:'บันทึก', cancel:'ยกเลิก', edit:'แก้ไข', delete:'ลบ',
+  print_history:'พิมพ์ประวัติ', collection_healthy:'คอลเลกชันปกติ', back:'กลับ',
+  photo:'รูปภาพ', choose_photo:'เลือกรูป', remove:'ลบรูป', name_id:'ชื่อ / รหัส *', sex:'เพศ', unknown:'ไม่ทราบ',
+  male:'ตัวผู้', female:'ตัวเมีย', genes_morph:'ยีน / มอร์ฟ', het_possible:'Het / เป็นไปได้ว่า Het', breeding_status:'สถานะการผสม',
+  weight_g:'น้ำหนัก (กรัม)', dob:'วันเกิด', location:'ตำแหน่ง', parents:'พ่อแม่', notes:'บันทึก',
+  holdback:'เก็บไว้', breeding_male:'ตัวผู้ผสม', breeding_female:'ตัวเมียผสม', proven:'พิสูจน์แล้ว', for_sale:'ขาย', sold:'ขายแล้ว',
+  sire_unknown:'ไม่ทราบพ่อ', dam_unknown:'ไม่ทราบแม่', save_snake:'บันทึกงู', add_snake_title:'เพิ่มงู', edit_snake_title:'แก้ไขงู',
+  feed:'ให้อาหาร', weight:'น้ำหนัก', shed:'ลอกคราบ', health:'สุขภาพ', log_care:'บันทึกการดูแล', recent_records:'บันทึกล่าสุด',
+  date:'วันที่', value:'ค่า', result:'ผลลัพธ์', select_snake:'เลือกงู', save_record:'บันทึก',
+  male_parent:'ตัวผู้', female_parent:'ตัวเมีย', pairing_notes:'บันทึกการจับคู่', calculate_odds:'คำนวณโอกาส', save_pairing:'บันทึกการจับคู่',
+  saved_pairings:'การจับคู่ที่บันทึก', add_clutch:'เพิ่มคลัทช์', lay_date:'วันวางไข่', egg_count:'จำนวนไข่', temp_c:'อุณหภูมิ °C',
+  expected_hatch:'วันฟักโดยประมาณ', save_clutch:'บันทึกคลัทช์', hatch_create:'ฟักและสร้างลูก',
+  add_alarm:'เพิ่มปลุกในปฏิทิน', no_snakes:'ไม่พบงู', no_matches:'ไม่พบผลลัพธ์', full_backup:'สำรองทั้งหมด',
+  restore_backup:'กู้คืนข้อมูล', csv_export:'ส่งออก CSV', danger_zone:'โซนอันตราย', clear_all:'ลบข้อมูลทั้งหมด',
+  export_json:'ส่งออก JSON', export_csv:'ส่งออกรายชื่องู (CSV)', sort_name:'เรียง: ชื่อ', sort_weight:'เรียง: น้ำหนัก',
+  sort_new:'เรียง: ใหม่สุด', sort_fed:'เรียง: ให้อาหารล่าสุด', tap_photo:'แตะเพื่อเพิ่มรูป', feature_print:'พิมพ์ประวัติ',
+  view_snake:'ดู', eggs:'ไข่', incubation:'การฟัก', planned:'วางแผน', locked:'จับคู่แล้ว', gravid:'ท้อง', laid:'วางไข่แล้ว', hatched:'ฟักแล้ว'
+},
+es: {
+  dashboard:'Panel', home:'Inicio', snakes:'Serpientes', care:'Cuidados', breed:'Cría', clutch:'Nidadas', backup:'Respaldo', lineage:'Linaje',
+  add_snake:'Añadir serpiente', bulk_weight:'Peso masivo', bulk_feed:'Comida masiva', search_snakes:'Buscar…', all_sexes:'Todos los sexos',
+  all_statuses:'Todos los estados', all_genes:'Todos los genes', upcoming_hatches:'Eclosiones próximas', recent_activity:'Actividad reciente',
+  quick_search:'Búsqueda rápida', care_log:'Cuidados', breeding_planner:'Planificador', clutches:'Nidadas', lineage_title:'Linaje',
+  backup_data:'Respaldo y datos', lang_title:'Idioma', lang_help:'Elige el idioma. Términos genéticos en inglés.',
+  notif_title:'Avisos de eclosión', notif_help1:'Usa Añadir al calendario para una alarma fiable.', notif_help2:'Opcional: avisos al abrir la app.',
+  notif_btn:'Activar notificaciones', males:'Machos', females:'Hembras', active_clutches:'Nidadas activas', save:'Guardar', cancel:'Cancelar',
+  edit:'Editar', delete:'Eliminar', print_history:'Imprimir historial', collection_healthy:'Colección al día.', back:'Atrás',
+  photo:'Foto', choose_photo:'Elegir foto', remove:'Quitar', name_id:'Nombre / ID *', sex:'Sexo', unknown:'Desconocido', male:'Macho', female:'Hembra',
+  genes_morph:'Genes / Morph', het_possible:'Het / Posible het', breeding_status:'Estado', weight_g:'Peso (g)', dob:'Fecha de nacimiento',
+  location:'Ubicación', parents:'Padres', notes:'Notas', holdback:'Reserva', breeding_male:'Macho reproductor', breeding_female:'Hembra reproductora',
+  proven:'Probado', for_sale:'En venta', sold:'Vendido', sire_unknown:'Padre desconocido', dam_unknown:'Madre desconocida',
+  save_snake:'Guardar', add_snake_title:'Añadir serpiente', edit_snake_title:'Editar serpiente', feed:'Comida', weight:'Peso', shed:'Muda',
+  health:'Salud', log_care:'Registrar cuidado', recent_records:'Registros recientes', date:'Fecha', value:'Valor', result:'Resultado',
+  select_snake:'Seleccionar serpiente', save_record:'Guardar', male_parent:'Macho', female_parent:'Hembra', pairing_notes:'Notas del emparejamiento',
+  calculate_odds:'Calcular odds', save_pairing:'Guardar emparejamiento', saved_pairings:'Emparejamientos', add_clutch:'Añadir nidada',
+  lay_date:'Fecha de puesta', egg_count:'Huevos', temp_c:'Temp °C', expected_hatch:'Eclosión esperada', save_clutch:'Guardar nidada',
+  hatch_create:'Eclosionar y crear crías', add_alarm:'Añadir alarma al calendario', no_snakes:'No hay serpientes', no_matches:'Sin resultados',
+  full_backup:'Respaldo completo', restore_backup:'Restaurar', csv_export:'Exportar CSV', danger_zone:'Zona de peligro', clear_all:'Borrar todo',
+  export_json:'Exportar JSON', export_csv:'Exportar lista CSV', sort_name:'Orden: Nombre', sort_weight:'Orden: Peso', sort_new:'Orden: Nuevos',
+  sort_fed:'Orden: Última comida', tap_photo:'Toca para añadir foto', feature_print:'Imprimir historial', view_snake:'Ver', eggs:'Huevos',
+  incubation:'Incubación', planned:'Planificado', locked:'Acoplado', gravid:'Preñada', laid:'Puesta', hatched:'Eclosionado'
+},
+fr: {
+  dashboard:'Tableau de bord', home:'Accueil', snakes:'Serpents', care:'Soins', breed:'Reproduction', clutch:'Pontes', backup:'Sauvegarde', lineage:'Lignée',
+  add_snake:'Ajouter', bulk_weight:'Poids groupé', bulk_feed:'Nourriture groupée', search_snakes:'Rechercher…', all_sexes:'Tous les sexes',
+  all_statuses:'Tous les statuts', all_genes:'Tous les gènes', upcoming_hatches:'Éclosions à venir', recent_activity:'Activité récente',
+  quick_search:'Recherche rapide', care_log:'Soins', breeding_planner:'Planificateur', clutches:'Pontes', lineage_title:'Lignée',
+  backup_data:'Sauvegarde', lang_title:'Langue', lang_help:'Choisissez la langue. Termes génétiques en anglais.',
+  notif_title:'Alertes d’éclosion', notif_help1:'Utilisez Ajouter au calendrier pour une alarme fiable.', notif_help2:'Optionnel à l’ouverture de l’app.',
+  notif_btn:'Activer les notifications', males:'Mâles', females:'Femelles', active_clutches:'Pontes actives', save:'Enregistrer', cancel:'Annuler',
+  edit:'Modifier', delete:'Supprimer', print_history:'Imprimer l’historique', collection_healthy:'Collection à jour.', back:'Retour',
+  photo:'Photo', choose_photo:'Choisir une photo', remove:'Retirer', name_id:'Nom / ID *', sex:'Sexe', unknown:'Inconnu', male:'Mâle', female:'Femelle',
+  genes_morph:'Gènes / Morph', het_possible:'Het / Possible het', breeding_status:'Statut', weight_g:'Poids (g)', dob:'Date de naissance',
+  location:'Emplacement', parents:'Parents', notes:'Notes', holdback:'Réserve', breeding_male:'Mâle reproducteur', breeding_female:'Femelle reproductrice',
+  proven:'Prouvé', for_sale:'À vendre', sold:'Vendu', sire_unknown:'Père inconnu', dam_unknown:'Mère inconnue',
+  save_snake:'Enregistrer', add_snake_title:'Ajouter un serpent', edit_snake_title:'Modifier', feed:'Nourriture', weight:'Poids', shed:'Mue',
+  health:'Santé', log_care:'Enregistrer un soin', recent_records:'Enregistrements récents', date:'Date', value:'Valeur', result:'Résultat',
+  select_snake:'Choisir un serpent', save_record:'Enregistrer', male_parent:'Mâle', female_parent:'Femelle', pairing_notes:'Notes d’accouplement',
+  calculate_odds:'Calculer les odds', save_pairing:'Enregistrer l’accouplement', saved_pairings:'Accouplements', add_clutch:'Ajouter une ponte',
+  lay_date:'Date de ponte', egg_count:'Œufs', temp_c:'Temp °C', expected_hatch:'Éclosion prévue', save_clutch:'Enregistrer la ponte',
+  hatch_create:'Éclore et créer les petits', add_alarm:'Ajouter une alarme calendrier', no_snakes:'Aucun serpent', no_matches:'Aucun résultat',
+  full_backup:'Sauvegarde complète', restore_backup:'Restaurer', csv_export:'Export CSV', danger_zone:'Zone danger', clear_all:'Tout effacer',
+  export_json:'Exporter JSON', export_csv:'Exporter liste CSV', sort_name:'Tri: Nom', sort_weight:'Tri: Poids', sort_new:'Tri: Récents',
+  sort_fed:'Tri: Dernier repas', tap_photo:'Ajouter une photo', feature_print:'Imprimer l’historique', view_snake:'Voir', eggs:'Œufs',
+  incubation:'Incubation', planned:'Planifié', locked:'Accouplé', gravid:'Gravide', laid:'Ponte', hatched:'Éclos'
+},
+de: {
+  dashboard:'Übersicht', home:'Start', snakes:'Schlangen', care:'Pflege', breed:'Zucht', clutch:'Gelege', backup:'Backup', lineage:'Abstammung',
+  add_snake:'Hinzufügen', bulk_weight:'Gewicht massenhaft', bulk_feed:'Fütterung massenhaft', search_snakes:'Suchen…', all_sexes:'Alle Geschlechter',
+  all_statuses:'Alle Status', all_genes:'Alle Gene', upcoming_hatches:'Kommende Schlüpfe', recent_activity:'Letzte Aktivität',
+  quick_search:'Schnellsuche', care_log:'Pflege', breeding_planner:'Zuchtplaner', clutches:'Gelege', lineage_title:'Abstammung',
+  backup_data:'Backup & Daten', lang_title:'Sprache', lang_help:'Sprache wählen. Genetikbegriffe bleiben Englisch.',
+  notif_title:'Schlupf-Benachrichtigungen', notif_help1:'Kalender-Alarm für zuverlässige Erinnerung nutzen.', notif_help2:'Optional beim Öffnen der App.',
+  notif_btn:'Benachrichtigungen aktivieren', males:'Männchen', females:'Weibchen', active_clutches:'Aktive Gelege', save:'Speichern', cancel:'Abbrechen',
+  edit:'Bearbeiten', delete:'Löschen', print_history:'Verlauf drucken', collection_healthy:'Sammlung aktuell.', back:'Zurück',
+  photo:'Foto', choose_photo:'Foto wählen', remove:'Entfernen', name_id:'Name / ID *', sex:'Geschlecht', unknown:'Unbekannt', male:'Männlich', female:'Weiblich',
+  genes_morph:'Gene / Morph', het_possible:'Het / Mögliche Het', breeding_status:'Status', weight_g:'Gewicht (g)', dob:'Geburtsdatum',
+  location:'Standort', parents:'Eltern', notes:'Notizen', holdback:'Rücklage', breeding_male:'Zuchtmännchen', breeding_female:'Zuchtweibchen',
+  proven:'Bewährt', for_sale:'Zu verkaufen', sold:'Verkauft', sire_unknown:'Vater unbekannt', dam_unknown:'Mutter unbekannt',
+  save_snake:'Speichern', add_snake_title:'Schlange hinzufügen', edit_snake_title:'Bearbeiten', feed:'Fütterung', weight:'Gewicht', shed:'Häutung',
+  health:'Gesundheit', log_care:'Pflege eintragen', recent_records:'Letzte Einträge', date:'Datum', value:'Wert', result:'Ergebnis',
+  select_snake:'Schlange wählen', save_record:'Speichern', male_parent:'Männchen', female_parent:'Weibchen', pairing_notes:'Paarungsnotizen',
+  calculate_odds:'Odds berechnen', save_pairing:'Paarung speichern', saved_pairings:'Gespeicherte Paarungen', add_clutch:'Gelege hinzufügen',
+  lay_date:'Legedatum', egg_count:'Eier', temp_c:'Temp °C', expected_hatch:'Erwarteter Schlupf', save_clutch:'Gelege speichern',
+  hatch_create:'Schlüpfen & Babys anlegen', add_alarm:'Kalender-Alarm hinzufügen', no_snakes:'Keine Schlangen', no_matches:'Keine Treffer',
+  full_backup:'Vollständiges Backup', restore_backup:'Wiederherstellen', csv_export:'CSV-Export', danger_zone:'Gefahrenzone', clear_all:'Alles löschen',
+  export_json:'JSON exportieren', export_csv:'Liste als CSV', sort_name:'Sort: Name', sort_weight:'Sort: Gewicht', sort_new:'Sort: Neueste',
+  sort_fed:'Sort: Zuletzt gefüttert', tap_photo:'Foto hinzufügen', feature_print:'Verlauf drucken', view_snake:'Ansehen', eggs:'Eier',
+  incubation:'Inkubation', planned:'Geplant', locked:'Gepaart', gravid:'Trächtig', laid:'Gelegt', hatched:'Geschlüpft'
+},
+pt: {
+  dashboard:'Painel', home:'Início', snakes:'Cobras', care:'Cuidados', breed:'Reprodução', clutch:'Ninhadas', backup:'Backup', lineage:'Linhagem',
+  add_snake:'Adicionar', bulk_weight:'Peso em massa', bulk_feed:'Alimentação em massa', search_snakes:'Pesquisar…', all_sexes:'Todos os sexos',
+  all_statuses:'Todos os status', all_genes:'Todos os genes', upcoming_hatches:'Eclosões próximas', recent_activity:'Atividade recente',
+  quick_search:'Busca rápida', care_log:'Cuidados', breeding_planner:'Planejador', clutches:'Ninhadas', lineage_title:'Linhagem',
+  backup_data:'Backup e dados', lang_title:'Idioma', lang_help:'Escolha o idioma. Termos genéticos em inglês.',
+  notif_title:'Alertas de eclosão', notif_help1:'Use Adicionar ao Calendário para alarme confiável.', notif_help2:'Opcional ao abrir o app.',
+  notif_btn:'Ativar notificações', males:'Machos', females:'Fêmeas', active_clutches:'Ninhadas ativas', save:'Salvar', cancel:'Cancelar',
+  edit:'Editar', delete:'Excluir', print_history:'Imprimir histórico', collection_healthy:'Coleção em dia.', back:'Voltar',
+  photo:'Foto', choose_photo:'Escolher foto', remove:'Remover', name_id:'Nome / ID *', sex:'Sexo', unknown:'Desconhecido', male:'Macho', female:'Fêmea',
+  genes_morph:'Genes / Morph', het_possible:'Het / Possível het', breeding_status:'Status', weight_g:'Peso (g)', dob:'Data de nascimento',
+  location:'Local', parents:'Pais', notes:'Notas', holdback:'Reserva', breeding_male:'Macho reprodutor', breeding_female:'Fêmea reprodutora',
+  proven:'Comprovado', for_sale:'À venda', sold:'Vendido', sire_unknown:'Pai desconhecido', dam_unknown:'Mãe desconhecida',
+  save_snake:'Salvar', add_snake_title:'Adicionar cobra', edit_snake_title:'Editar', feed:'Alimentação', weight:'Peso', shed:'Muda',
+  health:'Saúde', log_care:'Registrar cuidado', recent_records:'Registros recentes', date:'Data', value:'Valor', result:'Resultado',
+  select_snake:'Selecionar cobra', save_record:'Salvar', male_parent:'Macho', female_parent:'Fêmea', pairing_notes:'Notas do acasalamento',
+  calculate_odds:'Calcular odds', save_pairing:'Salvar acasalamento', saved_pairings:'Acasalamentos', add_clutch:'Adicionar ninhada',
+  lay_date:'Data da postura', egg_count:'Ovos', temp_c:'Temp °C', expected_hatch:'Eclosão esperada', save_clutch:'Salvar ninhada',
+  hatch_create:'Eclodir e criar filhotes', add_alarm:'Adicionar alarme no calendário', no_snakes:'Nenhuma cobra', no_matches:'Sem resultados',
+  full_backup:'Backup completo', restore_backup:'Restaurar', csv_export:'Exportar CSV', danger_zone:'Zona de perigo', clear_all:'Apagar tudo',
+  export_json:'Exportar JSON', export_csv:'Exportar lista CSV', sort_name:'Ordenar: Nome', sort_weight:'Ordenar: Peso', sort_new:'Ordenar: Novos',
+  sort_fed:'Ordenar: Última refeição', tap_photo:'Adicionar foto', feature_print:'Imprimir histórico', view_snake:'Ver', eggs:'Ovos',
+  incubation:'Incubação', planned:'Planejado', locked:'Acasalado', gravid:'Grávida', laid:'Postura', hatched:'Eclodido'
+},
+id: {
+  dashboard:'Dasbor', home:'Beranda', snakes:'Ular', care:'Perawatan', breed:'Breeding', clutch:'Clutch', backup:'Cadangan', lineage:'Silsilah',
+  add_snake:'Tambah ular', bulk_weight:'Berat massal', bulk_feed:'Pakan massal', search_snakes:'Cari…', all_sexes:'Semua kelamin',
+  all_statuses:'Semua status', all_genes:'Semua gen', upcoming_hatches:'Menetas segera', recent_activity:'Aktivitas terbaru',
+  quick_search:'Cari cepat', care_log:'Perawatan', breeding_planner:'Perencana breeding', clutches:'Clutch', lineage_title:'Silsilah',
+  backup_data:'Cadangan & Data', lang_title:'Bahasa', lang_help:'Pilih bahasa. Istilah genetika tetap Inggris.',
+  notif_title:'Notifikasi hari menetas', notif_help1:'Gunakan Tambah ke Kalender untuk alarm andal.', notif_help2:'Opsional saat membuka app.',
+  notif_btn:'Aktifkan notifikasi', males:'Jantan', females:'Betina', active_clutches:'Clutch aktif', save:'Simpan', cancel:'Batal',
+  edit:'Edit', delete:'Hapus', print_history:'Cetak riwayat', collection_healthy:'Koleksi sehat.', back:'Kembali',
+  photo:'Foto', choose_photo:'Pilih foto', remove:'Hapus', name_id:'Nama / ID *', sex:'Kelamin', unknown:'Tidak diketahui', male:'Jantan', female:'Betina',
+  genes_morph:'Gen / Morph', het_possible:'Het / Kemungkinan het', breeding_status:'Status', weight_g:'Berat (g)', dob:'Tanggal lahir',
+  location:'Lokasi', parents:'Induk', notes:'Catatan', holdback:'Simpanan', breeding_male:'Jantan breeding', breeding_female:'Betina breeding',
+  proven:'Proven', for_sale:'Dijual', sold:'Terjual', sire_unknown:'Sire tidak diketahui', dam_unknown:'Dam tidak diketahui',
+  save_snake:'Simpan', add_snake_title:'Tambah ular', edit_snake_title:'Edit ular', feed:'Pakan', weight:'Berat', shed:'Ganti kulit',
+  health:'Kesehatan', log_care:'Catat perawatan', recent_records:'Catatan terbaru', date:'Tanggal', value:'Nilai', result:'Hasil',
+  select_snake:'Pilih ular', save_record:'Simpan', male_parent:'Jantan', female_parent:'Betina', pairing_notes:'Catatan pairing',
+  calculate_odds:'Hitung odds', save_pairing:'Simpan pairing', saved_pairings:'Pairing tersimpan', add_clutch:'Tambah clutch',
+  lay_date:'Tanggal bertelur', egg_count:'Jumlah telur', temp_c:'Suhu °C', expected_hatch:'Perkiraan menetas', save_clutch:'Simpan clutch',
+  hatch_create:'Tetas & buat anak', add_alarm:'Tambah alarm kalender', no_snakes:'Tidak ada ular', no_matches:'Tidak ada hasil',
+  full_backup:'Cadangan penuh', restore_backup:'Pulihkan', csv_export:'Ekspor CSV', danger_zone:'Zona bahaya', clear_all:'Hapus semua',
+  export_json:'Ekspor JSON', export_csv:'Ekspor daftar CSV', sort_name:'Urut: Nama', sort_weight:'Urut: Berat', sort_new:'Urut: Terbaru',
+  sort_fed:'Urut: Pakan terakhir', tap_photo:'Tambah foto', feature_print:'Cetak riwayat', view_snake:'Lihat', eggs:'Telur',
+  incubation:'Inkubasi', planned:'Direncanakan', locked:'Lock', gravid:'Bunting', laid:'Bertelur', hatched:'Menetas'
+}
+};
+
+function t(key) {
+  const lang = (db.settings && db.settings.lang) || 'en';
+  return (I18N[lang] && I18N[lang][key]) || I18N.en[key] || key;
+}
+
+function setLanguage(code) {
+  if (!db.settings) db.settings = { version: 17 };
+  db.settings.lang = code;
+  save();
+  applyLanguage();
+  // Re-render current view so dynamic text updates
+  const active = document.querySelector('.view.active');
+  if (active && active.id) show(active.id);
+}
+
+function applyLanguage() {
+  const lang = (db.settings && db.settings.lang) || 'en';
+  document.documentElement.lang = lang;
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const val = t(key);
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+      el.placeholder = val;
+    } else {
+      el.textContent = val;
+    }
+  });
+
+  // Nav
+  document.querySelectorAll('.bottom-nav button, .desktop-nav button').forEach(btn => {
+    const v = btn.dataset.view;
+    const map = { dashboard: 'home', animals: 'snakes', care: 'care', breeding: 'breed', clutches: 'clutch', lineage: 'lineage', backup: 'backup' };
+    const key = map[v];
+    if (!key) return;
+    const ico = btn.querySelector('.ico');
+    const label = t(key);
+    if (ico) btn.innerHTML = `<span class="ico">${ico.textContent}</span>${label}`;
+    else btn.textContent = t(v === 'dashboard' ? 'dashboard' : key);
+  });
+
+  // Translate plain labels that match English keys (forms)
+  const labelMap = {
+    'Photo': 'photo', 'Name / ID *': 'name_id', 'Sex': 'sex', 'Genes / Morph': 'genes_morph',
+    'Het / Possible Het': 'het_possible', 'Breeding Status': 'breeding_status', 'Weight (g)': 'weight_g',
+    'Date of Birth': 'dob', 'Location': 'location', 'Parents': 'parents', 'Notes': 'notes',
+    'Male': 'male_parent', 'Female': 'female_parent', 'Male / Parent 1': 'male_parent', 'Female / Parent 2': 'female_parent',
+    'Pairing notes': 'pairing_notes', 'Lay Date': 'lay_date', 'Egg Count': 'egg_count', 'Temp °C': 'temp_c',
+    'Incubation Temp °C': 'temp_c', 'Expected Hatch Date': 'expected_hatch', 'Date': 'date',
+    'Value / Weight / Prey': 'value', 'Result / Details': 'result', 'Snake': 'select_snake',
+    'Full backup': 'full_backup', 'Restore backup': 'restore_backup', 'CSV export': 'csv_export',
+    'Danger zone': 'danger_zone', 'Recent records': 'recent_records', 'Saved pairings': 'saved_pairings'
+  };
+  document.querySelectorAll('label').forEach(lab => {
+    const raw = lab.textContent.trim();
+    if (labelMap[raw]) lab.textContent = t(labelMap[raw]);
+    // also match already translated? skip
+  });
+
+  // Common buttons by text
+  const btnMap = {
+    'Choose Photo': 'choose_photo', 'Remove': 'remove', 'Cancel': 'cancel', 'Save Snake': 'save_snake',
+    'Save Record': 'save_record', 'Calculate Odds': 'calculate_odds', 'Calculate': 'calculate_odds',
+    'Save Pairing': 'save_pairing', 'Save Clutch': 'save_clutch', '＋ Add Clutch': 'add_clutch',
+    '＋ Add Snake': 'add_snake', 'Export JSON Backup': 'export_json', 'Export Snake List (CSV)': 'export_csv',
+    'Export Snake List CSV': 'export_csv', 'Clear All Data': 'clear_all',
+    'Enable in-app notifications': 'notif_btn', 'Print History': 'print_history',
+    'Add Alarm to Calendar': 'add_alarm', 'Hatch & Create Babies': 'hatch_create'
+  };
+  document.querySelectorAll('button').forEach(btn => {
+    const raw = btn.textContent.replace(/\s+/g, ' ').trim();
+    // keep icon buttons
+    if (btnMap[raw]) btn.textContent = t(btnMap[raw]);
+  });
+
+  // Select options
+  const optMap = {
+    'All sexes': 'all_sexes', 'All statuses': 'all_statuses', 'All genes': 'all_genes',
+    'Unknown': 'unknown', 'Male': 'male', 'Female': 'female',
+    'Holdback': 'holdback', 'Breeding Male': 'breeding_male', 'Breeding Female': 'breeding_female',
+    'Proven': 'proven', 'For Sale': 'for_sale', 'Sold': 'sold',
+    'Sort: Name': 'sort_name', 'Sort: Weight': 'sort_weight', 'Sort: Newest': 'sort_new', 'Sort: Last fed': 'sort_fed',
+    'Sire unknown': 'sire_unknown', 'Dam unknown': 'dam_unknown', 'Select snake': 'select_snake',
+    'Select male': 'male_parent', 'Select female': 'female_parent'
+  };
+  document.querySelectorAll('option').forEach(opt => {
+    const raw = opt.textContent.trim();
+    if (optMap[raw]) opt.textContent = t(optMap[raw]);
+  });
+
+  const sel = document.getElementById('langSelect');
+  if (sel) sel.value = lang;
+
+  const aph = document.getElementById('aph');
+  if (aph && (aph.textContent.includes('photo') || aph.textContent.includes('Tap') || aph.textContent.includes('รูป') || aph.textContent.includes('Foto'))) {
+    aph.textContent = t('tap_photo');
+  }
 }
 
 // ---------- DASHBOARD ----------
@@ -778,25 +1087,60 @@ function dash() {
   const activeClutches = db.clutches.filter(c => c.hatchDate && c.hatchDate >= today()).length;
 
   $('dashStats').innerHTML = `
-    <div class="stat"><strong>${ss.length}</strong><span>Snakes</span></div>
-    <div class="stat"><strong>${males}</strong><span>Males</span></div>
-    <div class="stat"><strong>${females}</strong><span>Females</span></div>
-    <div class="stat accent"><strong>${activeClutches}</strong><span>Active clutches</span></div>
+    <div class="stat"><strong>${ss.length}</strong><span>${t('snakes')}</span></div>
+    <div class="stat"><strong>${males}</strong><span>${t('males')}</span></div>
+    <div class="stat"><strong>${females}</strong><span>${t('females')}</span></div>
+    <div class="stat accent"><strong>${activeClutches}</strong><span>${t('active_clutches')}</span></div>
   `;
 
   // Alerts
   const noWeight = ss.filter(s => !s.weight && !db.care.some(c => c.snakeId === s.id && c.type === 'weight')).length;
-  const overdueFeed = ss.filter(s => {
+  function feedDueInfo(s) {
+    const interval = Number(s.feedDays) || 14;
     const last = db.care.filter(c => c.snakeId === s.id && c.type === 'feed').sort((a,b) => b.date.localeCompare(a.date))[0];
-    if (!last) return true;
-    return daysBetween(last.date, today()) > 21;
-  }).length;
+    if (!last) return { due: true, daysOver: 999, last: null, interval };
+    const daysSince = daysBetween(last.date, today());
+    return { due: daysSince >= interval, daysOver: daysSince - interval, last, interval, daysSince };
+  }
+  const feedDueList = ss.map(s => ({ s, info: feedDueInfo(s) })).filter(x => x.info.due && x.s.status !== 'Sold');
+  const overdueFeed = feedDueList.length;
+
+  // Hatch urgency
+  const hatchSoon = db.clutches.filter(c => c.hatchDate && !c.hatched).map(c => ({
+    c, days: daysBetween(today(), c.hatchDate)
+  }));
+  const dueToday = hatchSoon.filter(x => x.days === 0);
+  const overdueHatch = hatchSoon.filter(x => x.days < 0);
+  const dueWeek = hatchSoon.filter(x => x.days > 0 && x.days <= 7);
 
   let alerts = [];
+  if (dueToday.length) alerts.push(`<div class="notice ok">🔔 ${dueToday.length} clutch(es) expected to hatch <b>today</b>.</div>`);
+  if (overdueHatch.length) alerts.push(`<div class="notice danger">⏰ ${overdueHatch.length} clutch(es) past expected hatch date.</div>`);
+  if (dueWeek.length) alerts.push(`<div class="notice warn">📅 ${dueWeek.length} clutch(es) hatching within 7 days.</div>`);
   if (noWeight) alerts.push(`<div class="notice">⚠️ ${noWeight} snake(s) have no weight recorded.</div>`);
-  if (overdueFeed) alerts.push(`<div class="notice warn">🍽️ ${overdueFeed} snake(s) may be overdue for feeding (>21 days).</div>`);
+  if (overdueFeed) alerts.push(`<div class="notice warn">🍽️ ${overdueFeed} snake(s) due for feeding.</div>`);
   if (!alerts.length) alerts.push(`<div class="notice ok">✓ Collection looks healthy.</div>`);
-  $('dashAlerts').innerHTML = alerts.join('');
+  $('dashAlerts').innerHTML = alerts.join('') + (feedDueList.length ? `
+    <div class="card" style="margin-top:10px">
+      <h3>Due to feed</h3>
+      ${feedDueList.slice(0,12).map(({s, info}) => `
+        <div class="line" onclick="animalDetail('${s.id}')" style="cursor:pointer">
+          <b>${esc(s.name)}</b>
+          ${info.last ? `Last fed ${info.last.date} · ${info.daysSince}d ago` : 'Never fed'}
+          · every ${info.interval}d
+          <button class="small" style="margin-left:8px" onclick="event.stopPropagation();setCareSnake('${s.id}');logCare('feed')">Feed</button>
+        </div>`).join('')}
+    </div>` : '');
+
+  // In-app notification on hatch day (if permission granted)
+  if (dueToday.length && 'Notification' in window && Notification.permission === 'granted') {
+    try {
+      new Notification('Naga Exotics', {
+        body: `${dueToday.length} clutch(es) expected to hatch today.`,
+        tag: 'naga-hatch-today'
+      });
+    } catch (e) {}
+  }
 
   // Upcoming hatches
   const upcoming = db.clutches
@@ -809,10 +1153,11 @@ function dash() {
     const f = db.snakes.find(s => s.id === p?.femaleId);
     const days = daysBetween(today(), c.hatchDate);
     const label = days < 0 ? `${Math.abs(days)}d overdue` : days === 0 ? 'Today!' : `${days}d left`;
-    return `<div class="line">
+    return `<div class="line" onclick="clutchDetail('${c.id}')" style="cursor:pointer">
       <b>${esc(c.name || 'Clutch')}</b>
       ${esc(m?.name || '?')} × ${esc(f?.name || '?')} • ${c.eggs} eggs<br>
       <span class="countdown">${label}</span> · ${c.hatchDate}
+      ${c.hatchDate && !c.hatched ? ` · <a href="#" onclick="event.stopPropagation();addClutchToCalendar('${c.id}')" style="color:var(--accent)">📅 Alarm</a>` : ''}
     </div>`;
   }).join('') : '<div class="muted">No hatch dates set yet.</div>';
 
@@ -928,6 +1273,8 @@ function editAnimal(id) {
   $('aweight').value = s.weight || '';
   $('adob').value = s.dob || '';
   $('alocation').value = s.location || '';
+  if ($('afeedDays')) $('afeedDays').value = s.feedDays || 14;
+  if ($('aprice')) $('aprice').value = s.price || '';
   $('anotes').value = s.notes || '';
   $('asire').value = s.sire || '';
   $('adam').value = s.dam || '';
@@ -1000,6 +1347,8 @@ $('af').onsubmit = e => {
     genes: $('agenes').value.trim(),
     hets: $('ahets').value.trim(),
     status: $('astatusf').value,
+    feedDays: parseInt($('afeedDays').value) || 14,
+    price: $('aprice').value.trim(),
     weight: $('aweight').value,
     dob: $('adob').value,
     location: $('alocation').value.trim(),
@@ -1055,6 +1404,7 @@ function animalDetail(id) {
       <button onclick="showQR('${s.id}')"><span class="ico">📱</span>QR</button>
     </div>
     <div class="actions" style="margin-top:0">
+      <button onclick="shareSaleCard('${s.id}')">🏷️ Sale / Share Card</button>
       <button onclick="printSnakeHistory('${s.id}')">🖨️ Print History</button>
       <button class="danger" onclick="deleteAnimal('${s.id}')">Delete</button>
     </div>
@@ -1064,6 +1414,8 @@ function animalDetail(id) {
       <div class="line"><b>Het / Possible Het</b>${esc(s.hets || 'None')}</div>
       <div class="line"><b>Weight</b>${s.weight ? esc(s.weight) + ' g' : 'Not recorded'}${weightSpark(s.id)}</div>
       <div class="line"><b>Date of Birth</b>${esc(s.dob || 'Not recorded')}</div>
+      <div class="line"><b>Feed interval</b>${s.feedDays || 14} days</div>
+      <div class="line"><b>Sale price</b>${esc(s.price || 'Not set')}</div>
       <div class="line"><b>Parents</b>Sire: ${esc(sire?.name || 'Unknown')} · Dam: ${esc(dam?.name || 'Unknown')}</div>
       <div class="line"><b>Notes</b>${esc(s.notes || 'None')}</div>
     </div>
@@ -1076,6 +1428,67 @@ function animalDetail(id) {
     </div>
   `;
   show('animalDetail');
+}
+
+
+function shareSaleCard(id) {
+  const s = db.snakes.find(x => x.id === id);
+  if (!s) return;
+  const photo = (s.photos && s.photos[0]) || s.photo || '';
+  const sire = db.snakes.find(x => x.id === s.sire);
+  const dam = db.snakes.find(x => x.id === s.dam);
+  const text = [
+    s.name,
+    [s.sex, s.status].filter(Boolean).join(' · '),
+    s.genes || '',
+    s.hets ? 'Het: ' + s.hets : '',
+    s.weight ? s.weight + 'g' : '',
+    s.dob ? 'DOB ' + s.dob : '',
+    s.price ? 'Price: ' + s.price : '',
+    (sire || dam) ? ('Parents: ' + (sire?.name || '?') + ' x ' + (dam?.name || '?')) : '',
+    s.notes || ''
+  ].filter(Boolean).join('\\n');
+
+  const w = window.open('', '_blank');
+  if (!w) { alert('Allow pop-ups'); return; }
+  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>${esc(s.name)}</title>
+  <style>
+    body{font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;margin:0;background:#0c1611;color:#eef6f0}
+    .card{max-width:420px;margin:16px auto;background:#121f18;border-radius:16px;overflow:hidden;border:1px solid #24352c}
+    img{width:100%;max-height:280px;object-fit:cover;display:block;background:#182820}
+    .body{padding:16px}
+    h1{margin:0 0 6px;font-size:22px}
+    .meta{color:#9eb0a2;font-size:13px;margin-bottom:12px}
+    .row{margin:8px 0;font-size:14px}
+    .label{color:#7d9285;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+    .price{font-size:22px;font-weight:800;color:#22c55e;margin:12px 0}
+    .actions{display:flex;gap:8px;padding:0 16px 16px}
+    button{flex:1;padding:12px;border:0;border-radius:12px;font-weight:700;background:#22c55e;color:#042f14}
+    button.ghost{background:#24352c;color:#eef6f0}
+    textarea{width:100%;min-height:110px;margin-top:10px;background:#0c1611;color:#eef6f0;border:1px solid #2f4438;border-radius:10px;padding:10px}
+  </style></head><body>
+  <div class="card">
+    ${photo ? `<img src="${photo}">` : ''}
+    <div class="body">
+      <h1>${esc(s.name)}</h1>
+      <div class="meta">${esc(s.sex||'')} · ${esc(s.status||'')}</div>
+      <div class="row"><div class="label">Genes</div>${esc(s.genes||'—')}</div>
+      ${s.hets ? `<div class="row"><div class="label">Hets</div>${esc(s.hets)}</div>` : ''}
+      ${s.weight ? `<div class="row"><div class="label">Weight</div>${esc(s.weight)} g</div>` : ''}
+      ${s.dob ? `<div class="row"><div class="label">DOB</div>${esc(s.dob)}</div>` : ''}
+      ${(sire||dam) ? `<div class="row"><div class="label">Parents</div>${esc(sire?.name||'?')} × ${esc(dam?.name||'?')}</div>` : ''}
+      ${s.price ? `<div class="price">${esc(s.price)}</div>` : '<div class="muted">Set a sale price when editing this snake</div>'}
+      <div class="label" style="margin-top:12px">Copy text</div>
+      <textarea id="shareText">${text.replace(/</g,'&lt;')}</textarea>
+    </div>
+    <div class="actions">
+      <button onclick="navigator.clipboard.writeText(document.getElementById('shareText').value);alert('Copied')">Copy</button>
+      <button class="ghost" onclick="window.print()">Print</button>
+    </div>
+  </div>
+  </body></html>`);
+  w.document.close();
 }
 
 function printSnakeHistory(id) {
@@ -1580,15 +1993,24 @@ function newClutchForPair(pid) {
 $('clf').onsubmit = e => {
   e.preventDefault();
   const id = $('clid').value || crypto.randomUUID();
+  const eggCount = parseInt($('cleggs').value || 0);
+  const existing = db.clutches.find(x => x.id === id);
+  let eggList = (existing && existing.eggList) ? existing.eggList.slice() : [];
+  // Resize egg list to match count
+  while (eggList.length < eggCount) eggList.push({ n: eggList.length + 1, status: 'Incubating', note: '' });
+  if (eggList.length > eggCount) eggList = eggList.slice(0, eggCount);
+  eggList = eggList.map((eg, i) => ({ ...eg, n: i + 1 }));
   const c = {
     id,
     pairingId: $('clpair').value,
     date: $('cldate').value,
-    eggs: parseInt($('cleggs').value || 0),
+    eggs: eggCount,
+    eggList,
     temp: $('cltemp').value,
     hatchDate: $('clhatch').value,
     notes: $('clnotes').value,
-    name: 'Clutch ' + ($('cldate').value || '')
+    name: 'Clutch ' + ($('cldate').value || ''),
+    hatched: existing?.hatched || false
   };
   const i = db.clutches.findIndex(x => x.id === id);
   if (i >= 0) db.clutches[i] = c;
@@ -1633,6 +2055,14 @@ function clutchDetail(id) {
   const days = c.hatchDate ? daysBetween(today(), c.hatchDate) : null;
   const alreadyHatched = c.hatched || false;
 
+  // Ensure egg list exists
+  if (!c.eggList || !c.eggList.length) {
+    c.eggList = Array.from({ length: c.eggs || 0 }, (_, i) => ({ n: i + 1, status: 'Incubating', note: '' }));
+  }
+  const statuses = ['Incubating', 'Fertile', 'Slug', 'Pipping', 'Hatched', 'DOA'];
+  const counts = {};
+  statuses.forEach(st => counts[st] = c.eggList.filter(e => e.status === st).length);
+
   $('clutchBody').innerHTML = `
     <h2>🥚 ${esc(c.name)}</h2>
     <div class="card">
@@ -1646,18 +2076,124 @@ function clutchDetail(id) {
       <div class="line"><b>Notes</b>${esc(c.notes || 'None')}</div>
       ${alreadyHatched ? '<div class="notice ok">✓ Hatchlings have been created from this clutch.</div>' : ''}
     </div>
+
+    <div class="card">
+      <h3>Egg tracker</h3>
+      <div class="muted" style="margin-bottom:8px">
+        ${statuses.map(st => counts[st] ? `${counts[st]} ${st}` : '').filter(Boolean).join(' · ') || 'No eggs yet'}
+      </div>
+      ${c.eggList.map((eg, i) => `
+        <div class="line" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <b style="width:52px">Egg ${eg.n}</b>
+          <select onchange="setEggStatus('${id}',${i},this.value)" style="flex:1;min-width:120px">
+            ${statuses.map(st => `<option value="${st}" ${eg.status===st?'selected':''}>${st}</option>`).join('')}
+          </select>
+          <input value="${esc(eg.note||'')}" placeholder="note" style="flex:1;min-width:100px"
+            onchange="setEggNote('${id}',${i},this.value)">
+        </div>`).join('') || '<div class="muted">Set egg count when editing this clutch.</div>'}
+    </div>
+
     <div class="actions">
       ${!alreadyHatched ? `<button class="primary" onclick="hatchClutch('${id}')">🐍 Hatch & Create Babies</button>` : ''}
+      ${c.hatchDate ? `<button onclick="addClutchToCalendar('${id}')">📅 Add Alarm to Calendar</button>` : ''}
       <button onclick="editClutch('${id}')">Edit</button>
       <button class="danger" onclick="deleteClutch('${id}')">Delete</button>
     </div>`;
   show('clutchDetail');
 }
 
+function setEggStatus(clutchId, idx, status) {
+  const c = db.clutches.find(x => x.id === clutchId);
+  if (!c || !c.eggList || !c.eggList[idx]) return;
+  c.eggList[idx].status = status;
+  save();
+  clutchDetail(clutchId);
+}
+
+function setEggNote(clutchId, idx, note) {
+  const c = db.clutches.find(x => x.id === clutchId);
+  if (!c || !c.eggList || !c.eggList[idx]) return;
+  c.eggList[idx].note = note;
+  save();
+}
+
+function enableHatchNotifications() {
+  if (!('Notification' in window)) {
+    alert('Notifications are not supported in this browser.');
+    return;
+  }
+  Notification.requestPermission().then(p => {
+    if (p === 'granted') alert('In-app hatch reminders enabled. For a real phone alarm, still use Add Alarm to Calendar on each clutch.');
+    else alert('Permission not granted. Use Add Alarm to Calendar for reliable reminders on iPhone.');
+  });
+}
+
+function addClutchToCalendar(id) {
+  const c = db.clutches.find(x => x.id === id);
+  if (!c || !c.hatchDate) {
+    alert('Set an expected hatch date first.');
+    return;
+  }
+  const p = db.pairings.find(x => x.id === c.pairingId);
+  const m = db.snakes.find(s => s.id === p?.maleId);
+  const f = db.snakes.find(s => s.id === p?.femaleId);
+  const title = `Hatch: ${c.name || 'Clutch'} (${m?.name || '?'} × ${f?.name || '?'})`;
+  const desc = `${c.eggs || '?'} eggs · Incubation ${c.temp || '?'}°C\\nLaid: ${c.date || '—'}\\n${c.notes || ''}`;
+
+  // All-day event on hatch date with early morning reminder
+  const dt = c.hatchDate.replace(/-/g, '');
+  const uid = `naga-clutch-${c.id}@naga-exotics`;
+  const ics = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Naga Exotics//Breeder Pro//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    `UID:${uid}`,
+    `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
+    `DTSTART;VALUE=DATE:${dt}`,
+    `DTEND;VALUE=DATE:${dt}`,
+    `SUMMARY:${title.replace(/[,;\\]/g, ' ')}`,
+    `DESCRIPTION:${desc.replace(/[,;]/g, ' ')}`,
+    'BEGIN:VALARM',
+    'TRIGGER:-PT9H',
+    'ACTION:DISPLAY',
+    'DESCRIPTION:Clutch hatch day reminder',
+    'END:VALARM',
+    'BEGIN:VALARM',
+    'TRIGGER:PT0S',
+    'ACTION:DISPLAY',
+    'DESCRIPTION:Clutch expected to hatch today',
+    'END:VALARM',
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ].join('\r\n');
+
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `hatch-${c.hatchDate}-${(c.name || 'clutch').replace(/\s+/g, '-')}.ics`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  // Also try webcal / open for mobile
+  try {
+    const dataUri = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+    // iOS often prefers downloading the .ics then opening it
+  } catch (e) {}
+
+  alert('Calendar file downloaded.\n\nOn iPhone:\n1. Open the .ics file from Downloads/Files\n2. Tap Add to Calendar\n3. Set or keep the alert\n\nYou’ll get a real phone alarm on hatch day.');
+}
+
 function hatchClutch(id) {
   const c = db.clutches.find(x => x.id === id);
   if (!c) return;
-  const count = parseInt(prompt('How many hatchlings to create?', c.eggs || 1), 10);
+  const suggested = (c.eggList && c.eggList.filter(e => e.status === 'Hatched').length) || c.eggs || 1;
+  const count = parseInt(prompt('How many hatchlings to create?', suggested), 10);
   if (!count || count < 1) return;
   if (!confirm(`Create ${count} hatchling records linked to the parents?`)) return;
 
@@ -1894,7 +2430,7 @@ function saveBulk(btn) {
 function exportAll() {
   const blob = new Blob([JSON.stringify({
     app: 'Naga Exotics',
-    version: 11,
+    version: 17,
     exported: new Date().toISOString(),
     data: db
   }, null, 2)], { type: 'application/json' });
@@ -1920,7 +2456,7 @@ $('restore').onchange = e => {
         care: d.care || [],
         pairings: d.pairings || [],
         clutches: d.clutches || [],
-        settings: { version: 11 }
+        settings: { version: 17 }
       };
       save();
       alert('Backup restored successfully');
@@ -1932,13 +2468,138 @@ $('restore').onchange = e => {
   r.readAsText(f);
 };
 
+function parseCSV(text) {
+  const rows = [];
+  let row = [], cur = '', inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i], n = text[i+1];
+    if (inQ) {
+      if (c === '"' && n === '"') { cur += '"'; i++; }
+      else if (c === '"') inQ = false;
+      else cur += c;
+    } else {
+      if (c === '"') inQ = true;
+      else if (c === ',') { row.push(cur); cur = ''; }
+      else if (c === '\n' || c === '\r') {
+        if (c === '\r' && n === '\n') i++;
+        row.push(cur); cur = '';
+        if (row.some(x => x.trim() !== '')) rows.push(row);
+        row = [];
+      } else cur += c;
+    }
+  }
+  if (cur.length || row.length) { row.push(cur); if (row.some(x => x.trim() !== '')) rows.push(row); }
+  return rows;
+}
+
+function normHeader(h) {
+  return String(h || '').trim().toLowerCase().replace(/[\s_]+/g, '');
+}
+
+function importCSVFile(file) {
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      let text = r.result;
+      if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+      const rows = parseCSV(text);
+      if (rows.length < 2) { alert('CSV has no data rows'); return; }
+      const headers = rows[0].map(normHeader);
+      const idx = (names) => {
+        for (const n of names) {
+          const i = headers.indexOf(normHeader(n));
+          if (i >= 0) return i;
+        }
+        return -1;
+      };
+      const col = {
+        name: idx(['Name', 'name', 'ID', 'Snake']),
+        sex: idx(['Sex', 'Gender']),
+        genes: idx(['Genes', 'Morph', 'GenesMorph']),
+        hets: idx(['Hets', 'Het', 'PossibleHet']),
+        status: idx(['Status', 'BreedingStatus']),
+        weight: idx(['Weight_g', 'Weight', 'Weightg']),
+        dob: idx(['DOB', 'DateOfBirth', 'BirthDate']),
+        location: idx(['Location', 'Rack', 'Tub']),
+        sire: idx(['Sire', 'Father', 'Dad']),
+        dam: idx(['Dam', 'Mother', 'Mom']),
+        notes: idx(['Notes', 'Note', 'Comments']),
+        feedDays: idx(['FeedDays', 'FeedEvery', 'FeedInterval']),
+        price: idx(['Price', 'SalePrice'])
+      };
+      if (col.name < 0) { alert('CSV must have a Name column'); return; }
+
+      const get = (row, key) => col[key] >= 0 ? String(row[col[key]] ?? '').trim() : '';
+      let added = 0, updated = 0;
+
+      // First pass: create/update animals without parent links
+      const nameToId = {};
+      db.snakes.forEach(s => { if (s.name) nameToId[s.name.toLowerCase()] = s.id; });
+
+      const pendingParents = [];
+      for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        const name = get(row, 'name');
+        if (!name) continue;
+        const existing = db.snakes.find(s => (s.name || '').toLowerCase() === name.toLowerCase());
+        const data = {
+          name,
+          sex: get(row, 'sex') || 'Unknown',
+          genes: get(row, 'genes'),
+          hets: get(row, 'hets'),
+          status: get(row, 'status') || 'Holdback',
+          weight: get(row, 'weight'),
+          dob: get(row, 'dob'),
+          location: get(row, 'location'),
+          notes: get(row, 'notes'),
+          feedDays: parseInt(get(row, 'feedDays')) || 14,
+          price: get(row, 'price')
+        };
+        const sireName = get(row, 'sire');
+        const damName = get(row, 'dam');
+
+        if (existing) {
+          Object.assign(existing, data);
+          nameToId[name.toLowerCase()] = existing.id;
+          pendingParents.push({ id: existing.id, sireName, damName });
+          updated++;
+        } else {
+          const id = crypto.randomUUID();
+          db.snakes.unshift({
+            id, ...data, sire: '', dam: '', photo: '', photos: [], created: today()
+          });
+          nameToId[name.toLowerCase()] = id;
+          pendingParents.push({ id, sireName, damName });
+          added++;
+        }
+      }
+
+      // Second pass: link parents by name
+      pendingParents.forEach(p => {
+        const s = db.snakes.find(x => x.id === p.id);
+        if (!s) return;
+        if (p.sireName && nameToId[p.sireName.toLowerCase()]) s.sire = nameToId[p.sireName.toLowerCase()];
+        if (p.damName && nameToId[p.damName.toLowerCase()]) s.dam = nameToId[p.damName.toLowerCase()];
+      });
+
+      save();
+      alert(`CSV import done.\nAdded: ${added}\nUpdated: ${updated}`);
+      show('animals');
+    } catch (err) {
+      console.error(err);
+      alert('Could not read CSV. Check the file format.');
+    }
+  };
+  r.readAsText(file);
+}
+
 function exportCSV() {
-  const head = ['Name', 'Sex', 'Genes', 'Hets', 'Status', 'Weight_g', 'DOB', 'Location', 'Sire', 'Dam', 'Notes'];
+  const head = ['Name', 'Sex', 'Genes', 'Hets', 'Status', 'Weight_g', 'DOB', 'Location', 'Sire', 'Dam', 'Notes', 'FeedDays', 'Price'];
   const rows = db.snakes.map(s => [
     s.name, s.sex, s.genes, s.hets, s.status, s.weight, s.dob, s.location,
     db.snakes.find(x => x.id === s.sire)?.name || '',
     db.snakes.find(x => x.id === s.dam)?.name || '',
-    s.notes
+    s.notes, s.feedDays || 14, s.price || ''
   ]);
   const csv = [head, ...rows].map(r => r.map(v => `"${String(v ?? '').replaceAll('"', '""')}"`).join(',')).join('\n');
   const blob = new Blob([csv], { type: 'text/csv' });
@@ -1949,6 +2610,15 @@ function exportCSV() {
   a.click();
   URL.revokeObjectURL(u);
 }
+
+// Wire import input
+document.addEventListener('change', e => {
+  if (e.target && e.target.id === 'csvImport' && e.target.files && e.target.files[0]) {
+    importCSVFile(e.target.files[0]);
+    e.target.value = '';
+  }
+});
+
 
 // ---------- Minimal QR Code (Kazuhiko Arase style, compact) ----------
 function qrcode(typeNumber, errorCorrectionLevel) {
@@ -2069,8 +2739,12 @@ function qrcode(typeNumber, errorCorrectionLevel) {
 // Init — wait for storage to load first
 _ready.then(() => {
   show('dashboard');
+  applyLanguage();
+  const sel = document.getElementById('langSelect');
+  if (sel) sel.value = (db.settings && db.settings.lang) || 'en';
 }).catch(() => {
   show('dashboard');
+  applyLanguage();
 });
 </script>
 </body>
